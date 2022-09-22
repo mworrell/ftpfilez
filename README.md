@@ -38,6 +38,7 @@ Eshell V11.1  (abort with ^G)
 3> ftpfilez:put(Cfg, <<"ftps://ftp.example.com/LICENSE">>, {filename, "LICENSE"}).
 ok
 4> ftpfilez:stream(Cfg, <<"ftps://ftp.example.com/LICENSE">>, fun(X) -> io:format("!! ~p~n", [X]) end).
+!! stream_start
 !! <<"\n    Apache License\n", ...>>
 !! eof
 5> ftpfilez:delete(Cfg, <<"ftps://ftp.example.com/LICENSE">>).
