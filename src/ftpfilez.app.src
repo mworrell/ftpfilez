@@ -1,0 +1,24 @@
+{application, ftpfilez,
+ [
+  {description, "Simple FTPS service for storing files"},
+  {vsn, "git"},
+  {registered, []},
+  {mod, {ftpfilez_app, []}},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  crypto,
+                  public_key,
+                  ssl,
+                  inets,
+                  ftp,
+                  gproc,
+                  jobs,
+                  tls_certificate_check
+                 ]},
+  {env, [
+      {max_connections, 8}
+  ]},
+  {licenses, ["Apache 2.0"]},
+  {links, [{"GitHub", "https://github.com/mworrell/ftpfilez"}]}
+ ]}.
