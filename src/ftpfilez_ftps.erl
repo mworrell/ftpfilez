@@ -273,8 +273,8 @@ stream_loop(Pid, Fun) ->
 
 start_fun({Ref, Pid}) when is_pid(Pid) ->
     Pid ! {ftp, {Ref, stream_start, []}};
-start_fun(_Fun) ->
-    ok.
+start_fun(Fun) ->
+    call_fun(Fun, stream_start).
 
 call_fun({M,F,A}, Arg) ->
     erlang:apply(M,F,A++[Arg]);
