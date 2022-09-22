@@ -1,5 +1,5 @@
 %% @doc Place a data file on a FTP server, list home directory, or fetch a file.
-%% @enddoc
+%% @end
 
 %% Copyright 2022 Marc Worrell
 %%

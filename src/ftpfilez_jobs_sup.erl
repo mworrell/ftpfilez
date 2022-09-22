@@ -1,6 +1,7 @@
 %% @doc Supervisor for all s3 async queued jobs.
 %% @author Marc Worrell
 %% @copyright 2022 Marc Worrell
+%% @end
 
 %% Copyright 2022 Marc Worrell
 %%

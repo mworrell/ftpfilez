@@ -1,0 +1,4 @@
+%% encoding: UTF-8
+{application,ftpfilez}.
+{modules,[ftpfilez,ftpfilez_app,ftpfilez_ftps,ftpfilez_job,ftpfilez_jobs_sup,
+          ftpfilez_sup]}.

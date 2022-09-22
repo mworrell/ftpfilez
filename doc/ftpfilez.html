@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module ftpfilez</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module ftpfilez</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>FTPS file storage.
+<p>Copyright © 2022 Marc Worrell</p>
+
+<p><b>Authors:</b> Marc Worrell.</p>
+
+<h2><a name="description">Description</a></h2>FTPS file storage. Can put, get and stream files from FTP servers.
+  Similar interface as s3filez.
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-acl_type">acl_type()</a></h3>
+<p><tt>acl_type() = private | public_read | public_read_write | authenticated_read | bucket_owner_read | bucket_owner_full_control</tt></p>
+
+
+<h3 class="typedecl"><a name="type-config">config()</a></h3>
+<p><tt>config() = {Username::binary(), Password::binary()}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-put_data">put_data()</a></h3>
+<p><tt>put_data() = {data, binary()} | {filename, pos_integer(), <a href="/Users/marc/Sites/misc/kernel/doc/file.html#type-filename_all">file:filename_all()</a>} | {filename, <a href="/Users/marc/Sites/misc/kernel/doc/file.html#type-filename_all">file:filename_all()</a>}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-put_opt">put_opt()</a></h3>
+<p><tt>put_opt() = {acl, <a href="#type-acl_type">acl_type()</a>} | {content_type, string()}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-put_opts">put_opts()</a></h3>
+<p><tt>put_opts() = [<a href="#type-put_opt">put_opt()</a>]</tt></p>
+
+
+<h3 class="typedecl"><a name="type-queue_reply">queue_reply()</a></h3>
+<p><tt>queue_reply() = {ok, any(), pid()} | {error, {already_started, pid()}}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-ready_fun">ready_fun()</a></h3>
+<p><tt>ready_fun() = undefined | {atom(), atom(), list()} | function() | pid()</tt></p>
+
+
+<h3 class="typedecl"><a name="type-stream_fun">stream_fun()</a></h3>
+<p><tt>stream_fun() = {atom(), atom(), list()} | function() | pid()</tt></p>
+
+
+<h3 class="typedecl"><a name="type-sync_reply">sync_reply()</a></h3>
+<p><tt>sync_reply() = ok | {error, enoent | forbidden | term()}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-url">url()</a></h3>
+<p><tt>url() = binary() | string()</tt></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#create_bucket-2">create_bucket/2</a></td><td>Create a private bucket (aka directory) at the URL.</td></tr>
+<tr><td valign="top"><a href="#create_bucket-3">create_bucket/3</a></td><td>Create a bucket at the URL, with acl options.</td></tr>
+<tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>Delete the file at the url.</td></tr>
+<tr><td valign="top"><a href="#get-2">get/2</a></td><td>Fetch the data at the url.</td></tr>
+<tr><td valign="top"><a href="#put-3">put/3</a></td><td>Put a binary or file to the given url.</td></tr>
+<tr><td valign="top"><a href="#put-4">put/4</a></td><td>Put a binary or file to the given url.</td></tr>
+<tr><td valign="top"><a href="#queue_delete-2">queue_delete/2</a></td><td>Async delete a file on S3.</td></tr>
+<tr><td valign="top"><a href="#queue_delete-3">queue_delete/3</a></td><td>Async delete a file on S3, call ready_fun when ready.</td></tr>
+<tr><td valign="top"><a href="#queue_delete_id-4">queue_delete_id/4</a></td><td>Queue a named file deletion process, call ready_fun when ready.</td></tr>
+<tr><td valign="top"><a href="#queue_get-3">queue_get/3</a></td><td>Queue a file dowloader and call ready_fun when finished.</td></tr>
+<tr><td valign="top"><a href="#queue_get_id-4">queue_get_id/4</a></td><td>Queue a named file dowloader and call ready_fun when finished.</td></tr>
+<tr><td valign="top"><a href="#queue_put-3">queue_put/3</a></td><td>Queue a file uploader.</td></tr>
+<tr><td valign="top"><a href="#queue_put-4">queue_put/4</a></td><td>Queue a file uploader and call ready_fun when finished.</td></tr>
+<tr><td valign="top"><a href="#queue_put-5">queue_put/5</a></td><td>Queue a file uploader and call ready_fun when finished.</td></tr>
+<tr><td valign="top"><a href="#queue_put_id-5">queue_put_id/5</a></td><td>Start a named file uploader.</td></tr>
+<tr><td valign="top"><a href="#queue_stream-3">queue_stream/3</a></td><td>Queue a file downloader that will stream chunks to the given stream_fun.</td></tr>
+<tr><td valign="top"><a href="#queue_stream_id-4">queue_stream_id/4</a></td><td>Queue a named file downloader that will stream chunks to the given stream_fun.</td></tr>
+<tr><td valign="top"><a href="#stream-3">stream/3</a></td><td>Stream the contents of the url to the function, callback or to the httpc-streaming Pid.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="create_bucket-2">create_bucket/2</a></h3>
+<div class="spec">
+<p><tt>create_bucket(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Create a private bucket (aka directory) at the URL.</p>
+
+<h3 class="function"><a name="create_bucket-3">create_bucket/3</a></h3>
+<div class="spec">
+<p><tt>create_bucket(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, Opts::<a href="#type-put_opts">put_opts()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Create a bucket at the URL, with acl options.</p>
+
+<h3 class="function"><a name="delete-2">delete/2</a></h3>
+<div class="spec">
+<p><tt>delete(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Delete the file at the url.</p>
+
+<h3 class="function"><a name="get-2">get/2</a></h3>
+<div class="spec">
+<p><tt>get(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; {ok, ContentType::binary(), Data::binary()} | {error, enoent | forbidden | term()}</tt><br></p>
+<p> </p>
+</div><p>Fetch the data at the url.</p>
+
+<h3 class="function"><a name="put-3">put/3</a></h3>
+<div class="spec">
+<p><tt>put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, Payload::<a href="#type-put_data">put_data()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Put a binary or file to the given url.</p>
+
+<h3 class="function"><a name="put-4">put/4</a></h3>
+<div class="spec">
+<p><tt>put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, X3::<a href="#type-put_data">put_data()</a>, Opts::<a href="#type-put_opts">put_opts()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Put a binary or file to the given url. Set options for acl.
+  Ensures that the directory of the file is present by recursively creating
+  the sub directories.</p>
+
+<h3 class="function"><a name="queue_delete-2">queue_delete/2</a></h3>
+<div class="spec">
+<p><tt>queue_delete(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Async delete a file on S3</p>
+
+<h3 class="function"><a name="queue_delete-3">queue_delete/3</a></h3>
+<div class="spec">
+<p><tt>queue_delete(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Async delete a file on S3, call ready_fun when ready.</p>
+
+<h3 class="function"><a name="queue_delete_id-4">queue_delete_id/4</a></h3>
+<div class="spec">
+<p><tt>queue_delete_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a named file deletion process, call ready_fun when ready.</p>
+
+<h3 class="function"><a name="queue_get-3">queue_get/3</a></h3>
+<div class="spec">
+<p><tt>queue_get(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a file dowloader and call ready_fun when finished.</p>
+
+<h3 class="function"><a name="queue_get_id-4">queue_get_id/4</a></h3>
+<div class="spec">
+<p><tt>queue_get_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a named file dowloader and call ready_fun when finished.
+       Names must be unique, duplicates are refused with <tt>{error, {already_started, _}}</tt>.</p>
+
+<h3 class="function"><a name="queue_put-3">queue_put/3</a></h3>
+<div class="spec">
+<p><tt>queue_put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a file uploader. The data can be a binary or a filename.</p>
+
+<h3 class="function"><a name="queue_put-4">queue_put/4</a></h3>
+<div class="spec">
+<p><tt>queue_put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a file uploader and call ready_fun when finished.</p>
+
+<h3 class="function"><a name="queue_put-5">queue_put/5</a></h3>
+<div class="spec">
+<p><tt>queue_put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>, Opts::<a href="#type-put_opts">put_opts()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a file uploader and call ready_fun when finished. Options include
+  the <tt>acl</tt> setting and <tt>content_type</tt> for the file.</p>
+
+<h3 class="function"><a name="queue_put_id-5">queue_put_id/5</a></h3>
+<div class="spec">
+<p><tt>queue_put_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Start a named file uploader. Names must be unique, duplicates are refused with
+  <tt>{error, {already_started, _}}</tt>.</p>
+
+<h3 class="function"><a name="queue_stream-3">queue_stream/3</a></h3>
+<div class="spec">
+<p><tt>queue_stream(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, StreamFun::<a href="#type-stream_fun">stream_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a file downloader that will stream chunks to the given stream_fun. The
+  default block size for the chunks is 64KB.</p>
+
+<h3 class="function"><a name="queue_stream_id-4">queue_stream_id/4</a></h3>
+<div class="spec">
+<p><tt>queue_stream_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, StreamFun::<a href="#type-stream_fun">stream_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Queue a named file downloader that will stream chunks to the given stream_fun. The
+  default block size for the chunks is 64KB.</p>
+
+<h3 class="function"><a name="stream-3">stream/3</a></h3>
+<div class="spec">
+<p><tt>stream(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, Fun::<a href="#type-stream_fun">stream_fun()</a> | {any(), pid()}) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
+<p> </p>
+</div><p>Stream the contents of the url to the function, callback or to the httpc-streaming Pid.</p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc</i></p>
+</body>
+</html>
