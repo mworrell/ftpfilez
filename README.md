@@ -1,4 +1,4 @@
-[![Test](https://github.com/mworrell/ftpfilez/workflows/Test/badge.svg)](https://github.com/mworrell/ftpfilez/actions)
+[![Test](https://github.com/mworrell/ftpfilez/actions/workflows/test.yml/badge.svg)](https://github.com/mworrell/ftpfilez/actions/workflows/test.yml)
 
 [![Hex.pm Version](https://img.shields.io/hexpm/v/ftpfilez.svg)](https://hex.pm/packages/ftpfilez)
 [![Hex.pm Downloads](https://img.shields.io/hexpm/dt/ftpfilez.svg)](https://hex.pm/packages/ftpfilez)
