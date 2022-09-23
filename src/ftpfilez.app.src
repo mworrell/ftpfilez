@@ -14,6 +14,7 @@
                   ftp,
                   gproc,
                   jobs,
+                  zotonic_stdlib,
                   tls_certificate_check
                  ]},
   {env, [
