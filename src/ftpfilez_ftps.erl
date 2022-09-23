@@ -26,6 +26,11 @@
     delete/2
 ]).
 
+% Testing
+-export([
+    vsftpd_tls/1
+]).
+
 -include_lib("kernel/include/logger.hrl").
 
 -define(BLOCK_SIZE, 65536).
@@ -223,7 +228,7 @@ do_ftp(#{ host := Host } =  Cfg, Fun) ->
         % {verbose, true},
         {mode, passive},
         {port, Port},
-        {tls, vsftpd_tls()},
+        {tls, vsftpd_tls(Host)},
         {tls_ctrl_session_reuse, true},
         {tls_sec_method, case Port of 990 -> ftps; _ -> ftpes end}
     ],
@@ -317,7 +322,7 @@ split_filename(Filename) ->
     Directory = lists:reverse(tl(lists:reverse(Parts))),
     {Directory, Basename}.
 
-vsftpd_tls() ->
+vsftpd_tls(Host) ->
     %% Workaround for interoperability issues with vsftpd =< 3.0.2:
     %%
     %% vsftpd =< 3.0.2 does not support ECDHE ciphers and the ssl application
@@ -330,12 +335,18 @@ vsftpd_tls() ->
             {key_exchange, fun(rsa) -> true; (_) -> false end}
         ]),
     Suites = ssl:append_cipher_suites(RSASuites, Default),
-    [
+    Options = [
         {ciphers, Suites},
         {reuse_sessions, true},
         %% vsftpd =< 3.0.3 gets upset with anything later than tlsv1.2
         {versions,['tlsv1.2']}
-    ].
+    ],
+    SSLOptions = ssl_options(Host),
+    SSLOptions1 = lists:foldl(
+        fun(K, Acc) -> proplists:delete(K, Acc) end,
+        SSLOptions,
+        proplists:get_keys(Options)),
+    Options ++ SSLOptions1.
 
 to_list(B) when is_binary(B) -> binary_to_list(B);
 to_list(L) when is_list(L) -> L;
@@ -344,3 +355,15 @@ to_list(undefined) -> "".
 to_bin(B) when is_binary(B) -> B;
 to_bin(L) when is_list(L) -> unicode:characters_to_binary(L);
 to_bin(undefined) -> "".
+
+ssl_options(Host) ->
+    case z_ip_address:is_local_name(to_string(Host)) of
+        true ->
+            [ {verify, verify_none} ];
+        false ->
+            tls_certificate_check:options(Host)
+    end.
+
+to_string(B) when is_binary(B) -> unicode:characters_to_list(B, utf8);
+to_string(L) when is_list(L) -> L.
+
