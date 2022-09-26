@@ -138,7 +138,8 @@ stream(Cfg, Filename, StreamFun) ->
         ok ->
             ok;
         {error, _} = Error ->
-            error_fun(StreamFun, Error)
+            error_fun(StreamFun, Error),
+            Error
     end.
 
 -spec delete(Config, Filename) -> Result when
