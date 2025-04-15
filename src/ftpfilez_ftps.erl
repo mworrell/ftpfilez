@@ -231,6 +231,7 @@ do_ftp(#{ host := Host } =  Cfg, Fun) ->
     Password = to_list(maps:get(password, Cfg, "")),
     Options = [
         % {verbose, true},
+        {ftp_extension, true},
         {mode, passive},
         {port, Port},
         {tls, vsftpd_tls(Host, Cfg)},
