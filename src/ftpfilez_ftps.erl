@@ -1,7 +1,10 @@
-%% @doc Place a data file on a FTP server, list home directory, or fetch a file.
+%% @doc Place a data file on a FTP(S) server, list home directory, or fetch a file.
+%% The fetched file can be streamed.
+%% @author Marc Worrell
+%% @copyright Copyright 2022-2025 Marc Worrell
 %% @end
 
-%% Copyright 2022 Marc Worrell
+%% Copyright 2022-2025 Marc Worrell
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -28,7 +31,7 @@
 
 % Testing
 -export([
-    vsftpd_tls/1
+    vsftpd_tls/2
 ]).
 
 -include_lib("kernel/include/logger.hrl").
@@ -39,7 +42,8 @@
     host := string() | binary(),
     port => pos_integer(),
     username => string() | binary(),
-    password => string() | binary()
+    password => string() | binary(),
+    tls_options => list()
 }.
 -export_type([ config/0 ]).
 
@@ -229,7 +233,7 @@ do_ftp(#{ host := Host } =  Cfg, Fun) ->
         % {verbose, true},
         {mode, passive},
         {port, Port},
-        {tls, vsftpd_tls(Host)},
+        {tls, vsftpd_tls(Host, Cfg)},
         {tls_ctrl_session_reuse, true},
         {tls_sec_method, case Port of 990 -> ftps; _ -> ftpes end}
     ],
@@ -323,7 +327,7 @@ split_filename(Filename) ->
     Directory = lists:reverse(tl(lists:reverse(Parts))),
     {Directory, Basename}.
 
-vsftpd_tls(Host) ->
+vsftpd_tls(Host, Cfg) ->
     %% Workaround for interoperability issues with vsftpd =< 3.0.2:
     %%
     %% vsftpd =< 3.0.2 does not support ECDHE ciphers and the ssl application
@@ -342,7 +346,7 @@ vsftpd_tls(Host) ->
         %% vsftpd =< 3.0.3 gets upset with anything later than tlsv1.2
         {versions,['tlsv1.2']}
     ],
-    SSLOptions = ssl_options(Host),
+    SSLOptions = tls_options(Host, Cfg),
     SSLOptions1 = lists:foldl(
         fun(K, Acc) -> proplists:delete(K, Acc) end,
         SSLOptions,
@@ -357,7 +361,9 @@ to_bin(B) when is_binary(B) -> B;
 to_bin(L) when is_list(L) -> unicode:characters_to_binary(L);
 to_bin(undefined) -> "".
 
-ssl_options(Host) ->
+tls_options(_Host, #{ tls_options := Options }) when is_list(Options), Options =/= [] ->
+    Options;
+tls_options(Host, _Cfg) ->
     case z_ip_address:is_local_name(to_string(Host)) of
         true ->
             [ {verify, verify_none} ];

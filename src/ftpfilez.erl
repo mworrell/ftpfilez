@@ -1,10 +1,10 @@
 %% @doc FTPS file storage. Can put, get and stream files from FTP servers.
 %% Similar interface as s3filez.
 %% @author Marc Worrell
-%% @copyright 2022 Marc Worrell
+%% @copyright 2022-2025 Marc Worrell
 %% @end
 
-%% Copyright 2022 Marc Worrell
+%% Copyright 2022-2025 Marc Worrell
 %%
 %% This file is provided to you under the Apache License,
 %% Version 2.0 (the "License"); you may not use this file
@@ -49,7 +49,12 @@
 
 % -include_lib("kernel/include/logger.hrl").
 
--type config() :: {Username::binary(), Password::binary()}.
+-type config() :: #{
+        username := binary(),
+        password := binary(),
+        tls_options => list()
+    }.
+
 -type url() :: binary() | string().
 -type ready_fun() :: undefined
                     | {atom(),atom(),list()}
@@ -222,7 +227,7 @@ create_bucket(Config, Url, _Opts) ->
     {Cfg, Path} = config_path(Config, Url),
     ftpfilez_ftps:mkdir(Cfg, Path).
 
-%% @doc Stream the contents of the url to the function, callback or to the httpc-streaming Pid.
+%% @doc Stream the contents of the url to the function, callback or Pid.
 -spec stream( config(), url(), stream_fun() | {any(), pid()} ) -> sync_reply().
 stream(Config, Url, {_Ref, Pid} = Fun) when is_pid(Pid) ->
     {Cfg, Path} = config_path(Config, Url),
@@ -235,7 +240,7 @@ stream(Config, Url, {_M,_F,_A} = MFA) ->
     ftpfilez_ftps:stream(Cfg, Path, MFA).
 
 
-config_path({Username, Password}, Url) ->
+config_path(#{ username := Username, password := Password } = Config, Url) ->
     {_Scheme, Host, Path} = urlsplit(Url),
     {Host1, Port} = case binary:split(Host, <<":">>) of
         [H1] -> {H1, undefined};
@@ -245,7 +250,8 @@ config_path({Username, Password}, Url) ->
         host => Host1,
         port => Port,
         username => Username,
-        password => Password
+        password => Password,
+        tls_options => maps:get(tls_options, Config, [])
     },
     {Cfg, Path}.
 
