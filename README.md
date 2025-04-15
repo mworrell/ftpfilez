@@ -33,7 +33,7 @@ Erlang/OTP 23 [erts-11.1] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-thr
 Eshell V11.1  (abort with ^G)
 1> application:ensure_all_started(ftpfilez).
 {ok,[jobs,ftpfilez]}
-2> Cfg = {<<"anonymous">>, <<"test@example.com">>}.
+2> Cfg = #{ username => <<"anonymous">>, password => <<"test@example.com">> }.
 {<<"anonymous">>, <<"test@example.com">>}
 3> ftpfilez:put(Cfg, <<"ftps://ftp.example.com/LICENSE">>, {filename, "LICENSE"}).
 ok
