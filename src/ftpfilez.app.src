@@ -20,6 +20,6 @@
   {env, [
       {max_connections, 8}
   ]},
-  {licenses, ["Apache 2.0"]},
+  {licenses, ["Apache-2.0"]},
   {links, [{"GitHub", "https://github.com/mworrell/ftpfilez"}]}
  ]}.
