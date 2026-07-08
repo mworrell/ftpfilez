@@ -1,9 +1,9 @@
 %% @doc Main app code. Start the supervisor for the queued jobs.
 %% @author Marc Worrell
-%% @copyright 2022 Marc Worrell
+%% @copyright 2022-2026 Marc Worrell
 %% @end
 
-%% Copyright 2022 Marc Worrell
+%% Copyright 2022-2026 Marc Worrell
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@
 -behaviour(application).
 
 -export([start/2, stop/1]).
+
+-define(DEFAULT_MAX_CONNECTIONS, 4).
 
 start(_StartType, _StartArgs) ->
     case ftpfilez_sup:start_link() of
@@ -43,10 +45,11 @@ ensure_queue() ->
         ]).
 
 %% @doc Max number of parallel connections. Quite some FTP servers
-%% have a limit of 10 connections, so default to 8.
+%% have a limit of 10 connections. We set the default to 4, so both
+%% the live site and the backup site can connect simultaneously.
 -spec max_connections() -> pos_integer().
 max_connections() ->
     case application:get_env(ftpfilez, max_connections) of
         {ok, N} when is_integer(N) -> N;
-        undefined -> 8
+        undefined -> ?DEFAULT_MAX_CONNECTIONS
     end.
