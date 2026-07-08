@@ -8,7 +8,7 @@
     <meta name="project" content="ftpfilez v2.1.0+build.17.ref360720c">
 
 
-    <title>ftpfilez_jobs_sup — ftpfilez v2.1.0+build.17.ref360720c</title>
+    <title>API Reference — ftpfilez v2.1.0+build.17.ref360720c</title>
 
     <link rel="stylesheet" href="dist/html-erlang-KCHZLXSC.css" />
 
@@ -47,7 +47,7 @@ ftpfilez
 
 <output role="status" id="toast"></output>
 
-<main class="content page-module" id="main" data-type="modules">
+<main class="content page-extra" id="main" data-type="extras">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -92,177 +92,77 @@ ftpfilez
 
 <div id="top-content">
   <div class="heading-with-actions top-heading">
-    <h1>
-      <span translate="no">ftpfilez_jobs_sup</span> 
-      <small class="app-vsn" translate="no">(ftpfilez v2.1.0+build.17.ref360720c)</small>
-
-    </h1>
+    <h1>API Reference <small class="app-vsn">ftpfilez v#2.1.0+build.17.ref360720c</small></h1>
 
 
-      <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.17.ref360720c/src/ftpfilez_jobs_sup.erl#L20" title="View Source" class="icon-action" rel="help nofollow">
+      <a href="https://github.com/mworrell/ftpfilez" title="View Source" class="icon-action" rel="help nofollow">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
   </div>
 
+    <section class="details-list">
+      <h2 id="modules" class="section-heading">Modules</h2>
+      <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="ftpfilez.html" translate="no">ftpfilez</a>
 
-    <section id="moduledoc">
-<p>Supervisor for all s3 async queued jobs.</p>
+  </div>
+
+    <div class="summary-synopsis"><p>FTPS file storage. Can put, get and stream files from FTP servers. Similar interface as s3filez.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="ftpfilez_app.html" translate="no">ftpfilez_app</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Main app code. Start the supervisor for the queued jobs.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="ftpfilez_ftps.html" translate="no">ftpfilez_ftps</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Place a data file on a FTP(S) server, list home directory, or fetch a file. The fetched file can be streamed.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="ftpfilez_job.html" translate="no">ftpfilez_job</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Async queued job, scheduled by jobs and supervised by ftpfilez_sup.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="ftpfilez_jobs_sup.html" translate="no">ftpfilez_jobs_sup</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Supervisor for all s3 async queued jobs.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="ftpfilez_sup.html" translate="no">ftpfilez_sup</a>
+
+  </div>
+
+</div>
+
+      </div>
     </section>
 
-</div>
-
-  <section id="summary" class="details-list">
-    <h2 class="section-heading">
-      <a class="hover-link" href="#summary">
-        <i class="ri-link-m" aria-hidden="true"></i>
-      </a>
-      <span class="text">Summary</span>
-    </h2>
-<div class="summary-functions summary">
-  <h3>
-    <a href="#functions">Functions</a>
-  </h3>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#init/1" data-no-tooltip="" translate="no">init(_)</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#queue/1" data-no-tooltip="" translate="no">queue(S3Job)</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#queue/2" data-no-tooltip="" translate="no">queue(Ref, S3Job)</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#start_link/0" data-no-tooltip="" translate="no">start_link()</a>
-
-      </div>
-
-    </div>
 
 </div>
-
-  </section>
-
-
-  <section id="functions" class="details-list">
-    <h2 class="section-heading">
-      <a class="hover-link" href="#functions">
-        <i class="ri-link-m" aria-hidden="true"></i>
-      </a>
-      <span class="text">Functions</span>
-    </h2>
-
-    <div class="functions-list">
-<section class="detail" id="init/1">
-
-  <div class="detail-header">
-    <a href="#init/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">init(_)</h1>
-
-
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.17.ref360720c/src/ftpfilez_jobs_sup.erl#L46" class="icon-action" rel="help nofollow" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="queue/1">
-
-  <div class="detail-header">
-    <a href="#queue/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">queue(S3Job)</h1>
-
-
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.17.ref360720c/src/ftpfilez_jobs_sup.erl#L34" class="icon-action" rel="help nofollow" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="queue/2">
-
-  <div class="detail-header">
-    <a href="#queue/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">queue(Ref, S3Job)</h1>
-
-
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.17.ref360720c/src/ftpfilez_jobs_sup.erl#L37" class="icon-action" rel="help nofollow" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="start_link/0">
-
-  <div class="detail-header">
-    <a href="#start_link/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">start_link()</h1>
-
-
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.17.ref360720c/src/ftpfilez_jobs_sup.erl#L43" class="icon-action" rel="help nofollow" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-
-    </div>
-  </section>
-
     <footer class="footer">
 
         <p>
