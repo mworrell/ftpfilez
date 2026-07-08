@@ -1,204 +1,1254 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Module ftpfilez</title>
-<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
-</head>
-<body bgcolor="white">
-<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<hr>
-
-<h1>Module ftpfilez</h1>
-<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>FTPS file storage.
-<p>Copyright © 2022 Marc Worrell</p>
-
-<p><b>Authors:</b> Marc Worrell.</p>
-
-<h2><a name="description">Description</a></h2>FTPS file storage. Can put, get and stream files from FTP servers.
-  Similar interface as s3filez.
-<h2><a name="types">Data Types</a></h2>
-
-<h3 class="typedecl"><a name="type-acl_type">acl_type()</a></h3>
-<p><tt>acl_type() = private | public_read | public_read_write | authenticated_read | bucket_owner_read | bucket_owner_full_control</tt></p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.40.3">
+    <meta name="project" content="ftpfilez v2.1.0+build.18.ref9d65500">
 
 
-<h3 class="typedecl"><a name="type-config">config()</a></h3>
-<p><tt>config() = {Username::binary(), Password::binary()}</tt></p>
+    <title>ftpfilez — ftpfilez v2.1.0+build.18.ref9d65500</title>
+
+    <link rel="stylesheet" href="dist/html-erlang-KCHZLXSC.css" />
+
+    <script defer src="dist/sidebar_items-F3220734.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-Y2MUTVIN.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="readme.html" class="sidebar-projectName" translate="no">
+ftpfilez
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v2.1.0+build.18.ref9d65500
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras="Pages"></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of ftpfilez</span>
+            <div class="search-input-wrapper">
+              <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+                <i class="ri-close-line ri-lg" title="Cancel search"></i>
+              </button>
+            </div>
+          </label>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <div class="engine-selector" data-multiple="false">
+          <button type="button" class="engine-button" aria-label="Select search engine" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-search-2-line" aria-hidden="true"></i>
+            <span class="engine-name">Default</span>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </button>
+          <div class="engine-dropdown" hidden role="menu">
+
+              <button type="button"
+                      class="engine-option"
+                      data-engine-url="search.html?q="
+                      role="menuitemradio"
+                      aria-checked="true">
+                <span class="name">Default</span>
+                <span class="help">In-browser search</span>
+              </button>
+
+          </div>
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">ftpfilez</span> 
+      <small class="app-vsn" translate="no">(ftpfilez v2.1.0+build.18.ref9d65500)</small>
+
+    </h1>
 
 
-<h3 class="typedecl"><a name="type-put_data">put_data()</a></h3>
-<p><tt>put_data() = {data, binary()} | {filename, pos_integer(), <a href="/Users/marc/Sites/misc/kernel/doc/file.html#type-filename_all">file:filename_all()</a>} | {filename, <a href="/Users/marc/Sites/misc/kernel/doc/file.html#type-filename_all">file:filename_all()</a>}</tt></p>
+      <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L24" title="View Source" class="icon-action" rel="help nofollow">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
 
 
-<h3 class="typedecl"><a name="type-put_opt">put_opt()</a></h3>
-<p><tt>put_opt() = {acl, <a href="#type-acl_type">acl_type()</a>} | {content_type, string()}</tt></p>
+    <section id="moduledoc">
+<p>FTPS file storage. Can put, get and stream files from FTP servers. Similar interface as s3filez.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h2>
+<div class="summary-types summary">
+  <h3>
+    <a href="#types">Types</a>
+  </h3>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:acl_type/0" data-no-tooltip="" translate="no">acl_type/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:config/0" data-no-tooltip="" translate="no">config/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:put_data/0" data-no-tooltip="" translate="no">put_data/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:put_opt/0" data-no-tooltip="" translate="no">put_opt/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:put_opts/0" data-no-tooltip="" translate="no">put_opts/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:queue_reply/0" data-no-tooltip="" translate="no">queue_reply/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:ready_fun/0" data-no-tooltip="" translate="no">ready_fun/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:stream_fun/0" data-no-tooltip="" translate="no">stream_fun/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:sync_reply/0" data-no-tooltip="" translate="no">sync_reply/0</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:url/0" data-no-tooltip="" translate="no">url/0</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h3>
+    <a href="#functions">Functions</a>
+  </h3>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_bucket/2" data-no-tooltip="" translate="no">create_bucket(Config, Url)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a private bucket (aka directory) at the URL.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_bucket/3" data-no-tooltip="" translate="no">create_bucket(Config, Url, Opts)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a bucket at the URL, with acl options.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/2" data-no-tooltip="" translate="no">delete(Config, Url)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete the file at the url.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/2" data-no-tooltip="" translate="no">get(Config, Url)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Fetch the data at the url.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#put/3" data-no-tooltip="" translate="no">put(Config, Url, Payload)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Put a binary or file to the given url.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#put/4" data-no-tooltip="" translate="no">put(Config, Url, _, Opts)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Put a binary or file to the given url. Set options for acl. Ensures that the directory of the file is present by recursively creating the sub directories.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_delete/2" data-no-tooltip="" translate="no">queue_delete(Config, Url)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Async delete a file on S3</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_delete/3" data-no-tooltip="" translate="no">queue_delete(Config, Url, ReadyFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Async delete a file on S3, call ready_fun when ready.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_delete_id/4" data-no-tooltip="" translate="no">queue_delete_id(JobId, Config, Url, ReadyFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a named file deletion process, call ready_fun when ready.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_get/3" data-no-tooltip="" translate="no">queue_get(Config, Url, ReadyFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a file dowloader and call ready_fun when finished.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_get_id/4" data-no-tooltip="" translate="no">queue_get_id(JobId, Config, Url, ReadyFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a named file dowloader and call ready_fun when finished. Names must be unique, duplicates are refused with &lt;tt&gt;{error, {already_started, _}}&lt;/tt&gt;.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_put/3" data-no-tooltip="" translate="no">queue_put(Config, Url, What)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a file uploader. The data can be a binary or a filename.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_put/4" data-no-tooltip="" translate="no">queue_put(Config, Url, What, ReadyFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a file uploader and call ready_fun when finished.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_put/5" data-no-tooltip="" translate="no">queue_put(Config, Url, What, ReadyFun, Opts)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a file uploader and call ready_fun when finished. Options include the &lt;tt&gt;acl&lt;/tt&gt; setting and &lt;tt&gt;content_type&lt;/tt&gt; for the file.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_put_id/5" data-no-tooltip="" translate="no">queue_put_id(JobId, Config, Url, What, ReadyFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Start a named file uploader. Names must be unique, duplicates are refused with &lt;tt&gt;{error, {already_started, _}}&lt;/tt&gt;.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_stream/3" data-no-tooltip="" translate="no">queue_stream(Config, Url, StreamFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a file downloader that will stream chunks to the given stream_fun. The default block size for the chunks is 64KB.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue_stream_id/4" data-no-tooltip="" translate="no">queue_stream_id(JobId, Config, Url, StreamFun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue a named file downloader that will stream chunks to the given stream_fun. The default block size for the chunks is 64KB.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stream/3" data-no-tooltip="" translate="no">stream(Config, Url, Fun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Stream the contents of the url to the function, callback or Pid.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
 
 
-<h3 class="typedecl"><a name="type-put_opts">put_opts()</a></h3>
-<p><tt>put_opts() = [<a href="#type-put_opt">put_opt()</a>]</tt></p>
+  <section id="types" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h2>
+
+    <div class="types-list">
+<section class="detail" id="t:acl_type/0">
+
+  <div class="detail-header">
+    <a href="#t:acl_type/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">acl_type/0</h1>
 
 
-<h3 class="typedecl"><a name="type-queue_reply">queue_reply()</a></h3>
-<p><tt>queue_reply() = {ok, any(), pid()} | {error, {already_started, pid()}}</tt></p>
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L78" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> acl_type() ::
+          private | public_read | public_read_write | authenticated_read | bucket_owner_read |
+          bucket_owner_full_control.</pre>
+
+      </div>
 
 
-<h3 class="typedecl"><a name="type-ready_fun">ready_fun()</a></h3>
-<p><tt>ready_fun() = undefined | {atom(), atom(), list()} | function() | pid()</tt></p>
+  </section>
+</section>
+<section class="detail" id="t:config/0">
+
+  <div class="detail-header">
+    <a href="#t:config/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">config/0</h1>
 
 
-<h3 class="typedecl"><a name="type-stream_fun">stream_fun()</a></h3>
-<p><tt>stream_fun() = {atom(), atom(), list()} | function() | pid()</tt></p>
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L52" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> config() :: #{username := <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), password := <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), tls_options => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:list/0">list</a>()}.</pre>
+
+      </div>
 
 
-<h3 class="typedecl"><a name="type-sync_reply">sync_reply()</a></h3>
-<p><tt>sync_reply() = ok | {error, enoent | forbidden | term()}</tt></p>
+  </section>
+</section>
+<section class="detail" id="t:put_data/0">
+
+  <div class="detail-header">
+    <a href="#t:put_data/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_data/0</h1>
 
 
-<h3 class="typedecl"><a name="type-url">url()</a></h3>
-<p><tt>url() = binary() | string()</tt></p>
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L66" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> put_data() ::
+          {data, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>()} |
+          {filename, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pos_integer/0">pos_integer</a>(), <a href="https://www.erlang.org/doc/apps/kernel/file.html#t:filename_all/0">file:filename_all</a>()} |
+          {filename, <a href="https://www.erlang.org/doc/apps/kernel/file.html#t:filename_all/0">file:filename_all</a>()}.</pre>
+
+      </div>
 
 
-<h2><a name="index">Function Index</a></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#create_bucket-2">create_bucket/2</a></td><td>Create a private bucket (aka directory) at the URL.</td></tr>
-<tr><td valign="top"><a href="#create_bucket-3">create_bucket/3</a></td><td>Create a bucket at the URL, with acl options.</td></tr>
-<tr><td valign="top"><a href="#delete-2">delete/2</a></td><td>Delete the file at the url.</td></tr>
-<tr><td valign="top"><a href="#get-2">get/2</a></td><td>Fetch the data at the url.</td></tr>
-<tr><td valign="top"><a href="#put-3">put/3</a></td><td>Put a binary or file to the given url.</td></tr>
-<tr><td valign="top"><a href="#put-4">put/4</a></td><td>Put a binary or file to the given url.</td></tr>
-<tr><td valign="top"><a href="#queue_delete-2">queue_delete/2</a></td><td>Async delete a file on S3.</td></tr>
-<tr><td valign="top"><a href="#queue_delete-3">queue_delete/3</a></td><td>Async delete a file on S3, call ready_fun when ready.</td></tr>
-<tr><td valign="top"><a href="#queue_delete_id-4">queue_delete_id/4</a></td><td>Queue a named file deletion process, call ready_fun when ready.</td></tr>
-<tr><td valign="top"><a href="#queue_get-3">queue_get/3</a></td><td>Queue a file dowloader and call ready_fun when finished.</td></tr>
-<tr><td valign="top"><a href="#queue_get_id-4">queue_get_id/4</a></td><td>Queue a named file dowloader and call ready_fun when finished.</td></tr>
-<tr><td valign="top"><a href="#queue_put-3">queue_put/3</a></td><td>Queue a file uploader.</td></tr>
-<tr><td valign="top"><a href="#queue_put-4">queue_put/4</a></td><td>Queue a file uploader and call ready_fun when finished.</td></tr>
-<tr><td valign="top"><a href="#queue_put-5">queue_put/5</a></td><td>Queue a file uploader and call ready_fun when finished.</td></tr>
-<tr><td valign="top"><a href="#queue_put_id-5">queue_put_id/5</a></td><td>Start a named file uploader.</td></tr>
-<tr><td valign="top"><a href="#queue_stream-3">queue_stream/3</a></td><td>Queue a file downloader that will stream chunks to the given stream_fun.</td></tr>
-<tr><td valign="top"><a href="#queue_stream_id-4">queue_stream_id/4</a></td><td>Queue a named file downloader that will stream chunks to the given stream_fun.</td></tr>
-<tr><td valign="top"><a href="#stream-3">stream/3</a></td><td>Stream the contents of the url to the function, callback or to the httpc-streaming Pid.</td></tr>
-</table>
+  </section>
+</section>
+<section class="detail" id="t:put_opt/0">
 
-<h2><a name="functions">Function Details</a></h2>
+  <div class="detail-header">
+    <a href="#t:put_opt/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_opt/0</h1>
 
-<h3 class="function"><a name="create_bucket-2">create_bucket/2</a></h3>
-<div class="spec">
-<p><tt>create_bucket(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Create a private bucket (aka directory) at the URL.</p>
 
-<h3 class="function"><a name="create_bucket-3">create_bucket/3</a></h3>
-<div class="spec">
-<p><tt>create_bucket(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, Opts::<a href="#type-put_opts">put_opts()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Create a bucket at the URL, with acl options.</p>
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L77" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
-<h3 class="function"><a name="delete-2">delete/2</a></h3>
-<div class="spec">
-<p><tt>delete(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Delete the file at the url.</p>
+    </div>
+  </div>
 
-<h3 class="function"><a name="get-2">get/2</a></h3>
-<div class="spec">
-<p><tt>get(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; {ok, ContentType::binary(), Data::binary()} | {error, enoent | forbidden | term()}</tt><br></p>
-<p> </p>
-</div><p>Fetch the data at the url.</p>
+  <section class="docstring">
 
-<h3 class="function"><a name="put-3">put/3</a></h3>
-<div class="spec">
-<p><tt>put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, Payload::<a href="#type-put_data">put_data()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Put a binary or file to the given url.</p>
+      <div class="specs">
 
-<h3 class="function"><a name="put-4">put/4</a></h3>
-<div class="spec">
-<p><tt>put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, X3::<a href="#type-put_data">put_data()</a>, Opts::<a href="#type-put_opts">put_opts()</a>) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Put a binary or file to the given url. Set options for acl.
-  Ensures that the directory of the file is present by recursively creating
-  the sub directories.</p>
+          <pre translate="no"><span class="attribute">-type</span> put_opt() :: {acl, <a href="#t:acl_type/0">acl_type</a>()} | {content_type, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>()}.</pre>
 
-<h3 class="function"><a name="queue_delete-2">queue_delete/2</a></h3>
-<div class="spec">
-<p><tt>queue_delete(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Async delete a file on S3</p>
+      </div>
 
-<h3 class="function"><a name="queue_delete-3">queue_delete/3</a></h3>
-<div class="spec">
-<p><tt>queue_delete(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Async delete a file on S3, call ready_fun when ready.</p>
 
-<h3 class="function"><a name="queue_delete_id-4">queue_delete_id/4</a></h3>
-<div class="spec">
-<p><tt>queue_delete_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a named file deletion process, call ready_fun when ready.</p>
+  </section>
+</section>
+<section class="detail" id="t:put_opts/0">
 
-<h3 class="function"><a name="queue_get-3">queue_get/3</a></h3>
-<div class="spec">
-<p><tt>queue_get(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a file dowloader and call ready_fun when finished.</p>
+  <div class="detail-header">
+    <a href="#t:put_opts/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_opts/0</h1>
 
-<h3 class="function"><a name="queue_get_id-4">queue_get_id/4</a></h3>
-<div class="spec">
-<p><tt>queue_get_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a named file dowloader and call ready_fun when finished.
-       Names must be unique, duplicates are refused with <tt>{error, {already_started, _}}</tt>.</p>
 
-<h3 class="function"><a name="queue_put-3">queue_put/3</a></h3>
-<div class="spec">
-<p><tt>queue_put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a file uploader. The data can be a binary or a filename.</p>
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L74" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
-<h3 class="function"><a name="queue_put-4">queue_put/4</a></h3>
-<div class="spec">
-<p><tt>queue_put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a file uploader and call ready_fun when finished.</p>
+    </div>
+  </div>
 
-<h3 class="function"><a name="queue_put-5">queue_put/5</a></h3>
-<div class="spec">
-<p><tt>queue_put(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>, Opts::<a href="#type-put_opts">put_opts()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a file uploader and call ready_fun when finished. Options include
-  the <tt>acl</tt> setting and <tt>content_type</tt> for the file.</p>
+  <section class="docstring">
 
-<h3 class="function"><a name="queue_put_id-5">queue_put_id/5</a></h3>
-<div class="spec">
-<p><tt>queue_put_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, What::<a href="#type-put_data">put_data()</a>, ReadyFun::<a href="#type-ready_fun">ready_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Start a named file uploader. Names must be unique, duplicates are refused with
-  <tt>{error, {already_started, _}}</tt>.</p>
+      <div class="specs">
 
-<h3 class="function"><a name="queue_stream-3">queue_stream/3</a></h3>
-<div class="spec">
-<p><tt>queue_stream(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, StreamFun::<a href="#type-stream_fun">stream_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a file downloader that will stream chunks to the given stream_fun. The
-  default block size for the chunks is 64KB.</p>
+          <pre translate="no"><span class="attribute">-type</span> put_opts() :: [<a href="#t:put_opt/0">put_opt</a>()].</pre>
 
-<h3 class="function"><a name="queue_stream_id-4">queue_stream_id/4</a></h3>
-<div class="spec">
-<p><tt>queue_stream_id(JobId::any(), Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, StreamFun::<a href="#type-stream_fun">stream_fun()</a>) -&gt; <a href="#type-queue_reply">queue_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Queue a named file downloader that will stream chunks to the given stream_fun. The
-  default block size for the chunks is 64KB.</p>
+      </div>
 
-<h3 class="function"><a name="stream-3">stream/3</a></h3>
-<div class="spec">
-<p><tt>stream(Config::<a href="#type-config">config()</a>, Url::<a href="#type-url">url()</a>, Fun::<a href="#type-stream_fun">stream_fun()</a> | {any(), pid()}) -&gt; <a href="#type-sync_reply">sync_reply()</a></tt><br></p>
-<p> </p>
-</div><p>Stream the contents of the url to the function, callback or to the httpc-streaming Pid.</p>
-<hr>
 
-<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc</i></p>
-</body>
+  </section>
+</section>
+<section class="detail" id="t:queue_reply/0">
+
+  <div class="detail-header">
+    <a href="#t:queue_reply/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_reply/0</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L70" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> queue_reply() :: {ok, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:any/0">any</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()} | {error, {already_started, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()}}.</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:ready_fun/0">
+
+  <div class="detail-header">
+    <a href="#t:ready_fun/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">ready_fun/0</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L59" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> ready_fun() :: undefined | {<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:atom/0">atom</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:atom/0">atom</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:list/0">list</a>()} | fun() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>().</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:stream_fun/0">
+
+  <div class="detail-header">
+    <a href="#t:stream_fun/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stream_fun/0</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L63" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> stream_fun() :: {<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:atom/0">atom</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:atom/0">atom</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:list/0">list</a>()} | fun() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>().</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:sync_reply/0">
+
+  <div class="detail-header">
+    <a href="#t:sync_reply/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sync_reply/0</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L72" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> sync_reply() :: ok | {error, enoent | forbidden | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:url/0">
+
+  <div class="detail-header">
+    <a href="#t:url/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">url/0</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L58" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> url() :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>().</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h2>
+
+    <div class="functions-list">
+<section class="detail" id="create_bucket/2">
+
+  <div class="detail-header">
+    <a href="#create_bucket/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_bucket(Config, Url)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L221" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> create_bucket(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>()) -> <a href="#t:sync_reply/0">sync_reply</a>().</pre>
+
+      </div>
+
+<p>Create a private bucket (aka directory) at the URL.</p>
+  </section>
+</section>
+<section class="detail" id="create_bucket/3">
+
+  <div class="detail-header">
+    <a href="#create_bucket/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_bucket(Config, Url, Opts)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L226" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> create_bucket(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:put_opts/0">put_opts</a>()) -> <a href="#t:sync_reply/0">sync_reply</a>().</pre>
+
+      </div>
+
+<p>Create a bucket at the URL, with acl options.</p>
+  </section>
+</section>
+<section class="detail" id="delete/2">
+
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete(Config, Url)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L188" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> delete(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>()) -> <a href="#t:sync_reply/0">sync_reply</a>().</pre>
+
+      </div>
+
+<p>Delete the file at the url.</p>
+  </section>
+</section>
+<section class="detail" id="get/2">
+
+  <div class="detail-header">
+    <a href="#get/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get(Config, Url)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L174" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> get(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>()) ->
+             {ok, ContentType :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), Data :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>()} | {error, enoent | forbidden | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+<p>Fetch the data at the url.</p>
+  </section>
+</section>
+<section class="detail" id="put/3">
+
+  <div class="detail-header">
+    <a href="#put/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put(Config, Url, Payload)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L202" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> put(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:put_data/0">put_data</a>()) -> <a href="#t:sync_reply/0">sync_reply</a>().</pre>
+
+      </div>
+
+<p>Put a binary or file to the given url.</p>
+  </section>
+</section>
+<section class="detail" id="put/4">
+
+  <div class="detail-header">
+    <a href="#put/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put(Config, Url, _, Opts)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L210" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> put(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:put_data/0">put_data</a>(), <a href="#t:put_opts/0">put_opts</a>()) -> <a href="#t:sync_reply/0">sync_reply</a>().</pre>
+
+      </div>
+
+<p>Put a binary or file to the given url. Set options for acl. Ensures that the directory of the file is present by recursively creating the sub directories.</p>
+  </section>
+</section>
+<section class="detail" id="queue_delete/2">
+
+  <div class="detail-header">
+    <a href="#queue_delete/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_delete(Config, Url)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L134" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_delete(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Async delete a file on S3</p>
+  </section>
+</section>
+<section class="detail" id="queue_delete/3">
+
+  <div class="detail-header">
+    <a href="#queue_delete/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_delete(Config, Url, ReadyFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L139" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_delete(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:ready_fun/0">ready_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Async delete a file on S3, call ready_fun when ready.</p>
+  </section>
+</section>
+<section class="detail" id="queue_delete_id/4">
+
+  <div class="detail-header">
+    <a href="#queue_delete_id/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_delete_id(JobId, Config, Url, ReadyFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L145" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_delete_id(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:any/0">any</a>(), <a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:ready_fun/0">ready_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a named file deletion process, call ready_fun when ready.</p>
+  </section>
+</section>
+<section class="detail" id="queue_get/3">
+
+  <div class="detail-header">
+    <a href="#queue_get/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_get(Config, Url, ReadyFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L96" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_get(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:ready_fun/0">ready_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a file dowloader and call ready_fun when finished.</p>
+  </section>
+</section>
+<section class="detail" id="queue_get_id/4">
+
+  <div class="detail-header">
+    <a href="#queue_get_id/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_get_id(JobId, Config, Url, ReadyFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L103" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_get_id(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:any/0">any</a>(), <a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:ready_fun/0">ready_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a named file dowloader and call ready_fun when finished. Names must be unique, duplicates are refused with &lt;tt&gt;{error, {already_started, _}}&lt;/tt&gt;.</p>
+  </section>
+</section>
+<section class="detail" id="queue_put/3">
+
+  <div class="detail-header">
+    <a href="#queue_put/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_put(Config, Url, What)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L109" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_put(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:put_data/0">put_data</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a file uploader. The data can be a binary or a filename.</p>
+  </section>
+</section>
+<section class="detail" id="queue_put/4">
+
+  <div class="detail-header">
+    <a href="#queue_put/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_put(Config, Url, What, ReadyFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L115" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_put(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:put_data/0">put_data</a>(), <a href="#t:ready_fun/0">ready_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a file uploader and call ready_fun when finished.</p>
+  </section>
+</section>
+<section class="detail" id="queue_put/5">
+
+  <div class="detail-header">
+    <a href="#queue_put/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_put(Config, Url, What, ReadyFun, Opts)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L122" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_put(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:put_data/0">put_data</a>(), <a href="#t:ready_fun/0">ready_fun</a>(), <a href="#t:put_opts/0">put_opts</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a file uploader and call ready_fun when finished. Options include the &lt;tt&gt;acl&lt;/tt&gt; setting and &lt;tt&gt;content_type&lt;/tt&gt; for the file.</p>
+  </section>
+</section>
+<section class="detail" id="queue_put_id/5">
+
+  <div class="detail-header">
+    <a href="#queue_put_id/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_put_id(JobId, Config, Url, What, ReadyFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L128" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_put_id(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:any/0">any</a>(), <a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:put_data/0">put_data</a>(), <a href="#t:ready_fun/0">ready_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Start a named file uploader. Names must be unique, duplicates are refused with &lt;tt&gt;{error, {already_started, _}}&lt;/tt&gt;.</p>
+  </section>
+</section>
+<section class="detail" id="queue_stream/3">
+
+  <div class="detail-header">
+    <a href="#queue_stream/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_stream(Config, Url, StreamFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L152" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_stream(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:stream_fun/0">stream_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a file downloader that will stream chunks to the given stream_fun. The default block size for the chunks is 64KB.</p>
+  </section>
+</section>
+<section class="detail" id="queue_stream_id/4">
+
+  <div class="detail-header">
+    <a href="#queue_stream_id/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue_stream_id(JobId, Config, Url, StreamFun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L161" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> queue_stream_id(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:any/0">any</a>(), <a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:stream_fun/0">stream_fun</a>()) -> <a href="#t:queue_reply/0">queue_reply</a>().</pre>
+
+      </div>
+
+<p>Queue a named file downloader that will stream chunks to the given stream_fun. The default block size for the chunks is 64KB.</p>
+  </section>
+</section>
+<section class="detail" id="stream/3">
+
+  <div class="detail-header">
+    <a href="#stream/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stream(Config, Url, Fun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.1.0+build.18.ref9d65500/src/ftpfilez.erl#L232" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> stream(<a href="#t:config/0">config</a>(), <a href="#t:url/0">url</a>(), <a href="#t:stream_fun/0">stream_fun</a>() | {<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:any/0">any</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()}) -> <a href="#t:sync_reply/0">sync_reply</a>().</pre>
+
+      </div>
+
+<p>Stream the contents of the url to the function, callback or Pid.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+
+        <p>
+
+            <span class="line">
+              <a href="https://hex.pm/packages/ftpfilez/2.1.0+build.18.ref9d65500">Hex Package</a>
+
+              <a href="https://preview.hex.pm/preview/ftpfilez/2.1.0+build.18.ref9d65500">Hex Preview</a>
+
+            </span>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Go to package docs">
+              Go to package docs
+            </button>
+
+
+              <a href="ftpfilez.epub">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.40.3) for the
+
+            <a href="https://erlang.org" title="Erlang" target="_blank" translate="no">Erlang programming language</a>
+
+        </p>
+
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
 </html>

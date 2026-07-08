@@ -49,7 +49,9 @@ Request Queue
 -------------
 
 Requests can be queued. They will be placed in a supervisor and scheduled using https://github.com/uwiger/jobs
-The current scheduler restricts the number of parallel S3 requests. The default maximum is 8.
+The current scheduler restricts the number of parallel FTP requests. The default maximum is 4. This is because
+many FTP servers have their maximum number of parallel connections set 10. Assuming that more than one ftpfilez
+client is connecting to the FTP server, we have set the default limit to just less than half of that.
 
 The `get`, `put` and `delete` requests can be queued. A function or pid can be given as a callback for the job result.
 The `stream` command can’t be queued: it is already running asynchronously.
