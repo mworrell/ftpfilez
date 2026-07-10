@@ -133,7 +133,8 @@ code_change(_OldVersion, State, _Extra) ->
 
 -spec key(string() | binary(), pos_integer(), string() | binary(), string() | binary()) -> key().
 key(Host, Port, Username, Password) ->
-    {to_bin(Host), Port, to_bin(Username), to_bin(Password)}.
+    PasswordHash = erlang:md5(to_bin(Password)),
+    {to_bin(Host), Port, to_bin(Username), PasswordHash}.
 
 -spec backoff_ms() -> non_neg_integer().
 backoff_ms() ->
