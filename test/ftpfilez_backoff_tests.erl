@@ -78,20 +78,24 @@ can_disable_backoff(_Ctx) ->
     ?assertEqual(none, ftpfilez_backoff:lookup(<<"ftp.example.com">>, 21, <<"user">>, <<"password">>)).
 
 lookup_is_safe_before_table_exists({{StartedByTest, Pid}, _Env}) ->
-    case StartedByTest andalso is_process_alive(Pid) of
+    WasAlive = is_process_alive(Pid),
+    case WasAlive of
         true ->
-            Ref = erlang:monitor(process, Pid),
-            exit(Pid, shutdown),
-            receive
-                {'DOWN', Ref, process, Pid, _Reason} -> ok
-            after 1000 ->
-                erlang:demonitor(Ref, [flush]),
-                ok
-            end;
+            stop_server(Pid);
         false ->
-            ets:delete(ftpfilez_backoff)
+            ok
     end,
-    ?assertEqual(none, ftpfilez_backoff:lookup(<<"ftp.example.com">>, 21, <<"user">>, <<"password">>)).
+    try
+        ?assertEqual(none, ftpfilez_backoff:lookup(<<"ftp.example.com">>, 21, <<"user">>, <<"password">>))
+    after
+        case {StartedByTest, WasAlive} of
+            {false, true} ->
+                {ok, NewPid} = ftpfilez_backoff:start_link(),
+                unlink(NewPid);
+            _ ->
+                ok
+        end
+    end.
 
 restore_env(undefined) ->
     application:unset_env(ftpfilez, connect_error_backoff_ms);
@@ -103,4 +107,14 @@ clear_table() ->
         true -> ok
     catch
         error:badarg -> ok
+    end.
+
+stop_server(Pid) ->
+    Ref = erlang:monitor(process, Pid),
+    exit(Pid, shutdown),
+    receive
+        {'DOWN', Ref, process, Pid, _Reason} -> ok
+    after 1000 ->
+        erlang:demonitor(Ref, [flush]),
+        ok
     end.
