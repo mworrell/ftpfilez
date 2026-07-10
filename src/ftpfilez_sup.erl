@@ -34,6 +34,14 @@ start_link() ->
 init([]) ->
     Children = [
         #{
+            id => ftpfilez_backoff,
+            start => {ftpfilez_backoff, start_link, []},
+            restart => permanent,
+            shutdown => 2000,
+            type => worker,
+            modules => [ftpfilez_backoff]
+        },
+        #{
             id => ftpfilez_jobs_sup,
             start => {ftpfilez_jobs_sup, start_link, []},
             restart => permanent,
