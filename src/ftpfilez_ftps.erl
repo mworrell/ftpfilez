@@ -238,15 +238,25 @@ do_ftp(#{ host := Host } =  Cfg, Fun) ->
         {tls_ctrl_session_reuse, true},
         {tls_sec_method, case Port of 990 -> ftps; _ -> ftpes end}
     ],
+    case ftpfilez_backoff:lookup(Host, Port, Username, Password) of
+        {error, _} = Error ->
+            Error;
+        none ->
+            do_ftp_connect(Host, Port, Username, Password, Options, Fun)
+    end.
+
+do_ftp_connect(Host, Port, Username, Password, Options, Fun) ->
     case ftp:open(to_list(Host), Options) of
         {ok, Pid} ->
             case ftp:user(Pid, Username, Password) of
                 ok ->
+                    ftpfilez_backoff:forget(Host, Port, Username, Password),
                     Result = Fun(Pid),
                     ftp:close(Pid),
                     Result;
                 {error, Reason} = Error ->
                     ftp:close(Pid),
+                    ftpfilez_backoff:remember(Host, Port, Username, Password, Error),
                     ?LOG_ERROR(#{
                         text => <<"FTP user login gave error">>,
                         in => ftpfilez,
@@ -258,6 +268,7 @@ do_ftp(#{ host := Host } =  Cfg, Fun) ->
                     Error
             end;
         {error, Reason} = Error ->
+            ftpfilez_backoff:remember(Host, Port, Username, Password, Error),
             ?LOG_ERROR(#{
                 text => <<"FTP connect gave error">>,
                 in => ftpfilez,
@@ -374,4 +385,3 @@ tls_options(Host, _Cfg) ->
 
 to_string(B) when is_binary(B) -> unicode:characters_to_list(B, utf8);
 to_string(L) when is_list(L) -> L.
-

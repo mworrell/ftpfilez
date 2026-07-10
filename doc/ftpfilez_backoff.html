@@ -8,7 +8,7 @@
     <meta name="project" content="ftpfilez v2.2.1">
 
 
-    <title>ftpfilez_job — ftpfilez v2.2.1</title>
+    <title>ftpfilez_backoff — ftpfilez v2.2.1</title>
 
     <link rel="stylesheet" href="dist/html-erlang-KCHZLXSC.css" />
 
@@ -93,13 +93,13 @@ ftpfilez
 <div id="top-content">
   <div class="heading-with-actions top-heading">
     <h1>
-      <span translate="no">ftpfilez_job</span> 
+      <span translate="no">ftpfilez_backoff</span> 
       <small class="app-vsn" translate="no">(ftpfilez v2.2.1)</small>
 
     </h1>
 
 
-      <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L22" title="View Source" class="icon-action" rel="help nofollow">
+      <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L24" title="View Source" class="icon-action" rel="help nofollow">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
@@ -108,7 +108,7 @@ ftpfilez
 
 
     <section id="moduledoc">
-<p>Async queued job, scheduled by jobs and supervised by ftpfilez_sup.</p>
+<p>Short-lived cache for connection/login failures.</p><p>This prevents a queue with many jobs for the same FTP credentials from opening many connections that are very likely to fail with the same error. Only connection setup errors are cached; file operation errors are not.</p>
     </section>
 
 </div>
@@ -120,6 +120,20 @@ ftpfilez
       </a>
       <span class="text">Summary</span>
     </h2>
+<div class="summary-types summary">
+  <h3>
+    <a href="#types">Types</a>
+  </h3>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:key/0" data-no-tooltip="" translate="no">key/0</a>
+
+      </div>
+
+    </div>
+
+</div>
 <div class="summary-functions summary">
   <h3>
     <a href="#functions">Functions</a>
@@ -135,6 +149,14 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#forget/4" data-no-tooltip="" translate="no">forget(Host, Port, Username, Password)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#handle_call/3" data-no-tooltip="" translate="no">handle_call(Msg, From, State)</a>
 
       </div>
@@ -143,7 +165,7 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#handle_cast/2" data-no-tooltip="" translate="no">handle_cast(_, State)</a>
+        <a href="#handle_cast/2" data-no-tooltip="" translate="no">handle_cast(Msg, State)</a>
 
       </div>
 
@@ -167,7 +189,23 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/2" data-no-tooltip="" translate="no">start_link(JobId, Cmd)</a>
+        <a href="#lookup/4" data-no-tooltip="" translate="no">lookup(Host, Port, Username, Password)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#remember/5" data-no-tooltip="" translate="no">remember(Host, Port, Username, Password, Error)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/0" data-no-tooltip="" translate="no">start_link()</a>
 
       </div>
 
@@ -185,6 +223,47 @@ ftpfilez
 
   </section>
 
+
+  <section id="types" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h2>
+
+    <div class="types-list">
+<section class="detail" id="t:key/0">
+
+  <div class="detail-header">
+    <a href="#t:key/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">key/0</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L48" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> key() :: {<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pos_integer/0">pos_integer</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>()}.</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
 
   <section id="functions" class="details-list">
     <h2 class="section-heading">
@@ -205,7 +284,7 @@ ftpfilez
       <h1 class="signature" translate="no">code_change(OldVersion, State, Extra)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L51" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L131" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -213,6 +292,39 @@ ftpfilez
   </div>
 
   <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="forget/4">
+
+  <div class="detail-header">
+    <a href="#forget/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">forget(Host, Port, Username, Password)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L101" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> forget(Host, Port, Username, Password) -> ok
+                when
+                    Host :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+                    Port :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pos_integer/0">pos_integer</a>(),
+                    Username :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+                    Password :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>().</pre>
+
+      </div>
 
 
   </section>
@@ -227,7 +339,7 @@ ftpfilez
       <h1 class="signature" translate="no">handle_call(Msg, From, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L41" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L119" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -246,10 +358,10 @@ ftpfilez
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">handle_cast(_, State)</h1>
+      <h1 class="signature" translate="no">handle_cast(Msg, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L44" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L122" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -271,7 +383,7 @@ ftpfilez
       <h1 class="signature" translate="no">handle_info(Info, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L48" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L125" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -293,7 +405,7 @@ ftpfilez
       <h1 class="signature" translate="no">init(_)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L37" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L109" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -305,17 +417,17 @@ ftpfilez
 
   </section>
 </section>
-<section class="detail" id="start_link/2">
+<section class="detail" id="lookup/4">
 
   <div class="detail-header">
-    <a href="#start_link/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#lookup/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">start_link(JobId, Cmd)</h1>
+      <h1 class="signature" translate="no">lookup(Host, Port, Username, Password)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L34" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L59" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -323,6 +435,79 @@ ftpfilez
   </div>
 
   <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> lookup(Host, Port, Username, Password) -> none | {error, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}
+                when
+                    Host :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+                    Port :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pos_integer/0">pos_integer</a>(),
+                    Username :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+                    Password :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>().</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="remember/5">
+
+  <div class="detail-header">
+    <a href="#remember/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">remember(Host, Port, Username, Password, Error)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L81" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> remember(Host, Port, Username, Password, Error) -> ok
+                  when
+                      Host :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+                      Port :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pos_integer/0">pos_integer</a>(),
+                      Username :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+                      Password :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+                      Error :: {error, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="start_link/0">
+
+  <div class="detail-header">
+    <a href="#start_link/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_link()</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L51" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> start_link() -> {ok, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()} | ignore | {error, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
 
 
   </section>
@@ -337,7 +522,7 @@ ftpfilez
       <h1 class="signature" translate="no">terminate(Reason, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_job.erl#L54" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_backoff.erl#L128" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
