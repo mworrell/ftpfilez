@@ -5,14 +5,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.40.3">
-    <meta name="project" content="ftpfilez v2.2.1">
+    <meta name="project" content="ftpfilez v2.3.0">
 
 
-    <title>ftpfilez_ftps — ftpfilez v2.2.1</title>
+    <title>ftpfilez_ftps — ftpfilez v2.3.0</title>
 
     <link rel="stylesheet" href="dist/html-erlang-KCHZLXSC.css" />
 
-    <script defer src="dist/sidebar_items-F754FD64.js"></script>
+    <script defer src="dist/sidebar_items-B0DC5811.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-Y2MUTVIN.js"></script>
 
@@ -37,7 +37,7 @@
 ftpfilez
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v2.2.1
+          v2.3.0
         </div>
       </div>
     </div>
@@ -94,12 +94,12 @@ ftpfilez
   <div class="heading-with-actions top-heading">
     <h1>
       <span translate="no">ftpfilez_ftps</span> 
-      <small class="app-vsn" translate="no">(ftpfilez v2.2.1)</small>
+      <small class="app-vsn" translate="no">(ftpfilez v2.3.0)</small>
 
     </h1>
 
 
-      <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L21" title="View Source" class="icon-action" rel="help nofollow">
+      <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L21" title="View Source" class="icon-action" rel="help nofollow">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
@@ -141,6 +141,26 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#close/1" data-no-tooltip="" translate="no">close(Pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Close a pooled FTP connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connect/1" data-no-tooltip="" translate="no">connect(Config)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Open and authenticate an FTP connection for a connection worker. The calling process becomes the connection owner.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#delete/2" data-no-tooltip="" translate="no">delete(Config, Filename)</a>
 
       </div>
@@ -157,6 +177,16 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#healthy/1" data-no-tooltip="" translate="no">healthy(Pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Check whether the FTP control connection responds.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#list/1" data-no-tooltip="" translate="no">list(Config)</a>
 
       </div>
@@ -168,6 +198,26 @@ ftpfilez
         <a href="#mkdir/2" data-no-tooltip="" translate="no">mkdir(Config, Directory)</a>
 
       </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#prepare/2" data-no-tooltip="" translate="no">prepare(Pid, BaseDirectory)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Check a connection and restore its initial server directory.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#reauthenticate/2" data-no-tooltip="" translate="no">reauthenticate(Pid, Config)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Authenticate an existing control connection with new credentials. Servers that support another USER command can switch accounts without a new TCP/TLS connection. A failed switch is not cached as a connection error; the connection worker will retry the credentials on a fresh connection.</p></div>
 
     </div>
 
@@ -219,7 +269,7 @@ ftpfilez
       <h1 class="signature" translate="no">config/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L41" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L47" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -235,6 +285,7 @@ ftpfilez
             port => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pos_integer/0">pos_integer</a>(),
             username => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
             password => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>() | <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(),
+            tls => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:boolean/0">boolean</a>(),
             tls_options => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:list/0">list</a>()}.</pre>
 
       </div>
@@ -255,6 +306,63 @@ ftpfilez
     </h2>
 
     <div class="functions-list">
+<section class="detail" id="close/1">
+
+  <div class="detail-header">
+    <a href="#close/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">close(Pid)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L380" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> close(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()) -> ok.</pre>
+
+      </div>
+
+<p>Close a pooled FTP connection.</p>
+  </section>
+</section>
+<section class="detail" id="connect/1">
+
+  <div class="detail-header">
+    <a href="#connect/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connect(Config)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L240" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> connect(Config) -> Result
+                 when Config :: <a href="#t:config/0">config</a>(), Result :: {ok, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>()} | {error, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+<p>Open and authenticate an FTP connection for a connection worker. The calling process becomes the connection owner.</p>
+  </section>
+</section>
 <section class="detail" id="delete/2">
 
   <div class="detail-header">
@@ -265,7 +373,7 @@ ftpfilez
       <h1 class="signature" translate="no">delete(Config, Filename)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L153" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L160" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -294,7 +402,7 @@ ftpfilez
       <h1 class="signature" translate="no">download(Config, Filename)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L116" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L123" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -316,6 +424,34 @@ ftpfilez
 
   </section>
 </section>
+<section class="detail" id="healthy/1">
+
+  <div class="detail-header">
+    <a href="#healthy/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">healthy(Pid)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L370" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> healthy(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()) -> <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:boolean/0">boolean</a>().</pre>
+
+      </div>
+
+<p>Check whether the FTP control connection responds.</p>
+  </section>
+</section>
 <section class="detail" id="list/1">
 
   <div class="detail-header">
@@ -326,7 +462,7 @@ ftpfilez
       <h1 class="signature" translate="no">list(Config)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L53" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L60" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -354,7 +490,7 @@ ftpfilez
       <h1 class="signature" translate="no">mkdir(Config, Directory)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L101" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L108" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -373,6 +509,63 @@ ftpfilez
 
   </section>
 </section>
+<section class="detail" id="prepare/2">
+
+  <div class="detail-header">
+    <a href="#prepare/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">prepare(Pid, BaseDirectory)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L361" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> prepare(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>()) -> ok | {error, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+<p>Check a connection and restore its initial server directory.</p>
+  </section>
+</section>
+<section class="detail" id="reauthenticate/2">
+
+  <div class="detail-header">
+    <a href="#reauthenticate/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">reauthenticate(Pid, Config)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L328" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> reauthenticate(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>(), Config) -> Result
+                        when Config :: <a href="#t:config/0">config</a>(), Result :: {ok, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:string/0">string</a>()} | {error, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+<p>Authenticate an existing control connection with new credentials. Servers that support another USER command can switch accounts without a new TCP/TLS connection. A failed switch is not cached as a connection error; the connection worker will retry the credentials on a fresh connection.</p>
+  </section>
+</section>
 <section class="detail" id="stream/3">
 
   <div class="detail-header">
@@ -383,7 +576,7 @@ ftpfilez
       <h1 class="signature" translate="no">stream(Config, Filename, StreamFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L129" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L136" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -416,7 +609,7 @@ ftpfilez
       <h1 class="signature" translate="no">upload(Config, Filename, Data)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L64" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L71" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -449,7 +642,7 @@ ftpfilez
       <h1 class="signature" translate="no">vsftpd_tls(Host, Cfg)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez_ftps.erl#L342" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez_ftps.erl#L456" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -470,9 +663,9 @@ ftpfilez
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/ftpfilez/2.2.1">Hex Package</a>
+              <a href="https://hex.pm/packages/ftpfilez/2.3.0">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/ftpfilez/2.2.1">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/ftpfilez/2.3.0">Hex Preview</a>
 
             </span>
 

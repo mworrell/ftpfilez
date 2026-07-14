@@ -42,6 +42,7 @@
     put/3,
     put/4,
     stream/3,
+    status/0,
 
     create_bucket/2,
     create_bucket/3
@@ -52,6 +53,7 @@
 -type config() :: #{
         username := binary(),
         password := binary(),
+        tls => boolean(),
         tls_options => list()
     }.
 
@@ -166,6 +168,11 @@ queue_stream_id(JobId, Config, Url, StreamFun) ->
 
 %%% Normal API - blocking on the process
 
+%% @doc Return the current connection pool and request queue status.
+-spec status() -> map().
+status() ->
+    ftpfilez_pool:status().
+
 %% @doc Fetch the data at the url.
 %% @todo Ensure a queue per hostname.
 -spec get( config(), url() ) ->
@@ -251,6 +258,7 @@ config_path(#{ username := Username, password := Password } = Config, Url) ->
         port => Port,
         username => Username,
         password => Password,
+        tls => maps:get(tls, Config, true),
         tls_options => maps:get(tls_options, Config, [])
     },
     {Cfg, Path}.

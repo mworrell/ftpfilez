@@ -1,10 +1,10 @@
 %% @doc Place a data file on a FTP(S) server, list home directory, or fetch a file.
 %% The fetched file can be streamed.
 %% @author Marc Worrell
-%% @copyright Copyright 2022-2025 Marc Worrell
+%% @copyright Copyright 2022-2026 Marc Worrell
 %% @end
 
-%% Copyright 2022-2025 Marc Worrell
+%% Copyright 2022-2026 Marc Worrell
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -26,7 +26,13 @@
     mkdir/2,
     download/2,
     stream/3,
-    delete/2
+    delete/2,
+
+    connect/1,
+    reauthenticate/2,
+    prepare/2,
+    healthy/1,
+    close/1
 ]).
 
 % Testing
@@ -43,6 +49,7 @@
     port => pos_integer(),
     username => string() | binary(),
     password => string() | binary(),
+    tls => boolean(),
     tls_options => list()
 }.
 -export_type([ config/0 ]).
@@ -222,7 +229,15 @@ read_file_data({fd, FD}) ->
             {ok, Data, {fd, FD}}
     end.
 
-do_ftp(#{ host := Host } =  Cfg, Fun) ->
+do_ftp(Cfg, Fun) ->
+    ftpfilez_pool:run(Cfg, Fun).
+
+%% @doc Open and authenticate an FTP connection for a connection worker.
+%% The calling process becomes the connection owner.
+-spec connect(Config) -> Result when
+    Config :: config(),
+    Result :: {ok, pid(), string()} | {error, term()}.
+connect(#{ host := Host } = Cfg) ->
     Port = case maps:get(port, Cfg, 21) of
         undefined -> 21;
         P when is_integer(P) -> P
@@ -233,29 +248,23 @@ do_ftp(#{ host := Host } =  Cfg, Fun) ->
         % {verbose, true},
         {ftp_extension, true},
         {mode, passive},
-        {port, Port},
-        {tls, vsftpd_tls(Host, Cfg)},
-        {tls_ctrl_session_reuse, true},
-        {tls_sec_method, case Port of 990 -> ftps; _ -> ftpes end}
-    ],
+        {port, Port}
+    ] ++ tls_connect_options(Host, Port, Cfg),
     case ftpfilez_backoff:lookup(Host, Port, Username, Password) of
         {error, _} = Error ->
             Error;
         none ->
-            do_ftp_connect(Host, Port, Username, Password, Options, Fun)
+            do_ftp_connect(Host, Port, Username, Password, Options)
     end.
 
-do_ftp_connect(Host, Port, Username, Password, Options, Fun) ->
+do_ftp_connect(Host, Port, Username, Password, Options) ->
     case ftp:open(to_list(Host), Options) of
         {ok, Pid} ->
             case ftp:user(Pid, Username, Password) of
                 ok ->
-                    ftpfilez_backoff:forget(Host, Port, Username, Password),
-                    Result = Fun(Pid),
-                    ftp:close(Pid),
-                    Result;
+                    connection_ready(Pid, Host, Port, Username, Password);
                 {error, Reason} = Error ->
-                    ftp:close(Pid),
+                    close(Pid),
                     ftpfilez_backoff:remember(Host, Port, Username, Password, Error),
                     ?LOG_ERROR(#{
                         text => <<"FTP user login gave error">>,
@@ -277,6 +286,111 @@ do_ftp_connect(Host, Port, Username, Password, Options, Fun) ->
                 host => Host
             }),
             Error
+    end.
+
+tls_connect_options(Host, Port, Cfg) ->
+    case maps:get(tls, Cfg, true) of
+        true ->
+            [
+                {tls, vsftpd_tls(Host, Cfg)},
+                {tls_ctrl_session_reuse, true},
+                {tls_sec_method, case Port of 990 -> ftps; _ -> ftpes end}
+            ];
+        false ->
+            []
+    end.
+
+connection_ready(Pid, Host, Port, Username, Password) ->
+    case ftp:pwd(Pid) of
+        {ok, BaseDirectory} ->
+            ftpfilez_backoff:forget(Host, Port, Username, Password),
+            {ok, Pid, BaseDirectory};
+        {error, Reason} = Error ->
+            close(Pid),
+            ftpfilez_backoff:remember(Host, Port, Username, Password, Error),
+            ?LOG_ERROR(#{
+                text => <<"FTP connection health check gave error">>,
+                in => ftpfilez,
+                result => error,
+                reason => Reason,
+                host => Host
+            }),
+            Error
+    end.
+
+%% @doc Authenticate an existing control connection with new credentials.
+%% Servers that support another USER command can switch accounts without a
+%% new TCP/TLS connection. A failed switch is not cached as a connection error;
+%% the connection worker will retry the credentials on a fresh connection.
+-spec reauthenticate(pid(), Config) -> Result when
+    Config :: config(),
+    Result :: {ok, string()} | {error, term()}.
+reauthenticate(Pid, #{host := Host} = Cfg) ->
+    Port = case maps:get(port, Cfg, 21) of
+        undefined -> 21;
+        P when is_integer(P) -> P
+    end,
+    Username = to_list(maps:get(username, Cfg, "anonymous")),
+    Password = to_list(maps:get(password, Cfg, "")),
+    case ftpfilez_backoff:lookup(Host, Port, Username, Password) of
+        {error, _} = Error ->
+            Error;
+        none ->
+            do_reauthenticate(Pid, Host, Port, Username, Password)
+    end.
+
+do_reauthenticate(Pid, Host, Port, Username, Password) ->
+    try ftp:user(Pid, Username, Password) of
+        ok ->
+            case ftp:pwd(Pid) of
+                {ok, BaseDirectory} ->
+                    ftpfilez_backoff:forget(Host, Port, Username, Password),
+                    {ok, BaseDirectory};
+                {error, _} = Error ->
+                    Error
+            end;
+        {error, _} = Error ->
+            Error
+    catch
+        exit:Reason ->
+            {error, Reason}
+    end.
+
+%% @doc Check a connection and restore its initial server directory.
+-spec prepare(pid(), string()) -> ok | {error, term()}.
+prepare(Pid, BaseDirectory) ->
+    try ftp:cd(Pid, BaseDirectory) of
+        Result -> Result
+    catch
+        exit:Reason -> {error, Reason}
+    end.
+
+%% @doc Check whether the FTP control connection responds.
+-spec healthy(pid()) -> boolean().
+healthy(Pid) ->
+    try ftp:pwd(Pid) of
+        {ok, _} -> true;
+        {error, _} -> false
+    catch
+        exit:_ -> false
+    end.
+
+%% @doc Close a pooled FTP connection.
+-spec close(pid()) -> ok.
+close(Pid) ->
+    Monitor = erlang:monitor(process, Pid),
+    catch ftp:close(Pid),
+    receive
+        {'DOWN', Monitor, process, Pid, _} ->
+            ok
+    after 2000 ->
+        exit(Pid, kill),
+        receive
+            {'DOWN', Monitor, process, Pid, _} -> ok
+        after 1000 ->
+            erlang:demonitor(Monitor, [flush]),
+            ok
+        end
     end.
 
 

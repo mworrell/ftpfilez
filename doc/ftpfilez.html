@@ -5,14 +5,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.40.3">
-    <meta name="project" content="ftpfilez v2.2.1">
+    <meta name="project" content="ftpfilez v2.3.0">
 
 
-    <title>ftpfilez — ftpfilez v2.2.1</title>
+    <title>ftpfilez — ftpfilez v2.3.0</title>
 
     <link rel="stylesheet" href="dist/html-erlang-KCHZLXSC.css" />
 
-    <script defer src="dist/sidebar_items-F754FD64.js"></script>
+    <script defer src="dist/sidebar_items-B0DC5811.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-Y2MUTVIN.js"></script>
 
@@ -37,7 +37,7 @@
 ftpfilez
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v2.2.1
+          v2.3.0
         </div>
       </div>
     </div>
@@ -94,12 +94,12 @@ ftpfilez
   <div class="heading-with-actions top-heading">
     <h1>
       <span translate="no">ftpfilez</span> 
-      <small class="app-vsn" translate="no">(ftpfilez v2.2.1)</small>
+      <small class="app-vsn" translate="no">(ftpfilez v2.3.0)</small>
 
     </h1>
 
 
-      <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L24" title="View Source" class="icon-action" rel="help nofollow">
+      <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L24" title="View Source" class="icon-action" rel="help nofollow">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
@@ -383,6 +383,16 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#status/0" data-no-tooltip="" translate="no">status()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Return the current connection pool and request queue status.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#stream/3" data-no-tooltip="" translate="no">stream(Config, Url, Fun)</a>
 
       </div>
@@ -415,7 +425,7 @@ ftpfilez
       <h1 class="signature" translate="no">acl_type/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L78" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L80" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -445,7 +455,7 @@ ftpfilez
       <h1 class="signature" translate="no">config/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L52" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L53" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -456,7 +466,7 @@ ftpfilez
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">-type</span> config() :: #{username := <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), password := <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), tls_options => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:list/0">list</a>()}.</pre>
+          <pre translate="no"><span class="attribute">-type</span> config() :: #{username := <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), password := <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:binary/0">binary</a>(), tls => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:boolean/0">boolean</a>(), tls_options => <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:list/0">list</a>()}.</pre>
 
       </div>
 
@@ -473,7 +483,7 @@ ftpfilez
       <h1 class="signature" translate="no">put_data/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L66" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L68" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -504,7 +514,7 @@ ftpfilez
       <h1 class="signature" translate="no">put_opt/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L77" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L79" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -532,7 +542,7 @@ ftpfilez
       <h1 class="signature" translate="no">put_opts/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L74" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L76" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -560,7 +570,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_reply/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L70" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L72" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -588,7 +598,7 @@ ftpfilez
       <h1 class="signature" translate="no">ready_fun/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L59" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L61" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -616,7 +626,7 @@ ftpfilez
       <h1 class="signature" translate="no">stream_fun/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L63" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L65" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -644,7 +654,7 @@ ftpfilez
       <h1 class="signature" translate="no">sync_reply/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L72" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L74" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -672,7 +682,7 @@ ftpfilez
       <h1 class="signature" translate="no">url/0</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L58" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L60" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -713,7 +723,7 @@ ftpfilez
       <h1 class="signature" translate="no">create_bucket(Config, Url)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L221" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L228" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -741,7 +751,7 @@ ftpfilez
       <h1 class="signature" translate="no">create_bucket(Config, Url, Opts)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L226" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L233" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -769,7 +779,7 @@ ftpfilez
       <h1 class="signature" translate="no">delete(Config, Url)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L188" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L195" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -797,7 +807,7 @@ ftpfilez
       <h1 class="signature" translate="no">get(Config, Url)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L174" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L181" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -826,7 +836,7 @@ ftpfilez
       <h1 class="signature" translate="no">put(Config, Url, Payload)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L202" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L209" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -854,7 +864,7 @@ ftpfilez
       <h1 class="signature" translate="no">put(Config, Url, _, Opts)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L210" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L217" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -882,7 +892,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_delete(Config, Url)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L134" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L136" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -910,7 +920,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_delete(Config, Url, ReadyFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L139" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L141" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -938,7 +948,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_delete_id(JobId, Config, Url, ReadyFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L145" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L147" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -966,7 +976,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_get(Config, Url, ReadyFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L96" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L98" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -994,7 +1004,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_get_id(JobId, Config, Url, ReadyFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L103" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L105" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1022,7 +1032,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_put(Config, Url, What)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L109" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L111" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1050,7 +1060,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_put(Config, Url, What, ReadyFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L115" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L117" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1078,7 +1088,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_put(Config, Url, What, ReadyFun, Opts)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L122" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L124" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1106,7 +1116,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_put_id(JobId, Config, Url, What, ReadyFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L128" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L130" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1134,7 +1144,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_stream(Config, Url, StreamFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L152" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L154" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1162,7 +1172,7 @@ ftpfilez
       <h1 class="signature" translate="no">queue_stream_id(JobId, Config, Url, StreamFun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L161" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L163" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1180,6 +1190,34 @@ ftpfilez
 <p>Queue a named file downloader that will stream chunks to the given stream_fun. The default block size for the chunks is 64KB.</p>
   </section>
 </section>
+<section class="detail" id="status/0">
+
+  <div class="detail-header">
+    <a href="#status/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">status()</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L173" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> status() -> <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:map/0">map</a>().</pre>
+
+      </div>
+
+<p>Return the current connection pool and request queue status.</p>
+  </section>
+</section>
 <section class="detail" id="stream/3">
 
   <div class="detail-header">
@@ -1190,7 +1228,7 @@ ftpfilez
       <h1 class="signature" translate="no">stream(Config, Url, Fun)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.2.1/src/ftpfilez.erl#L232" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0/src/ftpfilez.erl#L239" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -1217,9 +1255,9 @@ ftpfilez
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/ftpfilez/2.2.1">Hex Package</a>
+              <a href="https://hex.pm/packages/ftpfilez/2.3.0">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/ftpfilez/2.2.1">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/ftpfilez/2.3.0">Hex Preview</a>
 
             </span>
 

@@ -18,7 +18,9 @@
                   tls_certificate_check
                  ]},
   {env, [
-      {max_connections, 8}
+      {max_connections, 4},
+      {connection_idle_timeout_ms, 300000},
+      {connection_close_timeout_ms, 5000}
   ]},
   {licenses, ["Apache-2.0"]},
   {links, [{"GitHub", "https://github.com/mworrell/ftpfilez"}]}
