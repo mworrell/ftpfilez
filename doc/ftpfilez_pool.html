@@ -8,7 +8,7 @@
     <meta name="project" content="ftpfilez v2.3.0+build.22.refba672b3">
 
 
-    <title>ftpfilez_job — ftpfilez v2.3.0+build.22.refba672b3</title>
+    <title>ftpfilez_pool — ftpfilez v2.3.0+build.22.refba672b3</title>
 
     <link rel="stylesheet" href="dist/html-erlang-KCHZLXSC.css" />
 
@@ -93,13 +93,13 @@ ftpfilez
 <div id="top-content">
   <div class="heading-with-actions top-heading">
     <h1>
-      <span translate="no">ftpfilez_job</span> 
+      <span translate="no">ftpfilez_pool</span> 
       <small class="app-vsn" translate="no">(ftpfilez v2.3.0+build.22.refba672b3)</small>
 
     </h1>
 
 
-      <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L22" title="View Source" class="icon-action" rel="help nofollow">
+      <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L26" title="View Source" class="icon-action" rel="help nofollow">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
@@ -108,7 +108,7 @@ ftpfilez
 
 
     <section id="moduledoc">
-<p>Async queued job, scheduled by jobs and supervised by ftpfilez_sup.</p>
+<p>Pool of persistent FTP connections.</p><p>Requests are queued while all workers are busy. Each worker owns at most one FTP connection, as required by the OTP ftp client. Idle connections are reused only for matching server credentials. Each server has its own limit; the least recently used idle connection is repurposed when new credentials are requested.</p>
     </section>
 
 </div>
@@ -120,6 +120,20 @@ ftpfilez
       </a>
       <span class="text">Summary</span>
     </h2>
+<div class="summary-types summary">
+  <h3>
+    <a href="#types">Types</a>
+  </h3>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:operation/0" data-no-tooltip="" translate="no">operation/0</a>
+
+      </div>
+
+    </div>
+
+</div>
 <div class="summary-functions summary">
   <h3>
     <a href="#functions">Functions</a>
@@ -143,7 +157,7 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#handle_cast/2" data-no-tooltip="" translate="no">handle_cast(_, State)</a>
+        <a href="#handle_cast/2" data-no-tooltip="" translate="no">handle_cast(Msg, State)</a>
 
       </div>
 
@@ -167,9 +181,39 @@ ftpfilez
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/2" data-no-tooltip="" translate="no">start_link(JobId, Cmd)</a>
+        <a href="#max_connections/0" data-no-tooltip="" translate="no">max_connections()</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Configured pool size, capped at four open connections.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#run/2" data-no-tooltip="" translate="no">run(Cfg, Fun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Run an FTP operation on a pooled connection. Calls wait in FIFO order when all connection workers are occupied.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/0" data-no-tooltip="" translate="no">start_link()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#status/0" data-no-tooltip="" translate="no">status()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Return a sanitized snapshot of all connection workers and queued work.</p></div>
 
     </div>
 
@@ -185,6 +229,47 @@ ftpfilez
 
   </section>
 
+
+  <section id="types" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h2>
+
+    <div class="types-list">
+<section class="detail" id="t:operation/0">
+
+  <div class="detail-header">
+    <a href="#t:operation/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">operation/0</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L59" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> operation() :: fun((<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()) -> <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()).</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
 
   <section id="functions" class="details-list">
     <h2 class="section-heading">
@@ -205,7 +290,7 @@ ftpfilez
       <h1 class="signature" translate="no">code_change(OldVersion, State, Extra)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L51" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L179" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -227,7 +312,7 @@ ftpfilez
       <h1 class="signature" translate="no">handle_call(Msg, From, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L41" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L114" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -246,10 +331,10 @@ ftpfilez
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">handle_cast(_, State)</h1>
+      <h1 class="signature" translate="no">handle_cast(Msg, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L44" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L143" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -271,7 +356,7 @@ ftpfilez
       <h1 class="signature" translate="no">handle_info(Info, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L48" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L146" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -293,7 +378,7 @@ ftpfilez
       <h1 class="signature" translate="no">init(_)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L37" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L111" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -305,17 +390,17 @@ ftpfilez
 
   </section>
 </section>
-<section class="detail" id="start_link/2">
+<section class="detail" id="max_connections/0">
 
   <div class="detail-header">
-    <a href="#start_link/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#max_connections/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">start_link(JobId, Cmd)</h1>
+      <h1 class="signature" translate="no">max_connections()</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L34" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L105" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -324,7 +409,97 @@ ftpfilez
 
   <section class="docstring">
 
+      <div class="specs">
 
+          <pre translate="no"><span class="attribute">-spec</span> max_connections() -> 1..4.</pre>
+
+      </div>
+
+<p>Configured pool size, capped at four open connections.</p>
+  </section>
+</section>
+<section class="detail" id="run/2">
+
+  <div class="detail-header">
+    <a href="#run/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">run(Cfg, Fun)</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L95" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> run(<a href="ftpfilez_ftps.html#t:config/0">ftpfilez_ftps:config</a>(), <a href="#t:operation/0">operation</a>()) -> <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>().</pre>
+
+      </div>
+
+<p>Run an FTP operation on a pooled connection. Calls wait in FIFO order when all connection workers are occupied.</p>
+  </section>
+</section>
+<section class="detail" id="start_link/0">
+
+  <div class="detail-header">
+    <a href="#start_link/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_link()</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L89" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> start_link() -> {ok, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:pid/0">pid</a>()} | ignore | {error, <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="status/0">
+
+  <div class="detail-header">
+    <a href="#status/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">status()</h1>
+
+
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L100" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> status() -> <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:map/0">map</a>().</pre>
+
+      </div>
+
+<p>Return a sanitized snapshot of all connection workers and queued work.</p>
   </section>
 </section>
 <section class="detail" id="terminate/2">
@@ -337,7 +512,7 @@ ftpfilez
       <h1 class="signature" translate="no">terminate(Reason, State)</h1>
 
 
-        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_job.erl#L54" class="icon-action" rel="help nofollow" aria-label="View Source">
+        <a href="https://github.com/mworrell/ftpfilez/blob/v2.3.0+build.22.refba672b3/src/ftpfilez_pool.erl#L176" class="icon-action" rel="help nofollow" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 

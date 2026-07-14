@@ -42,6 +42,14 @@ init([]) ->
             modules => [ftpfilez_backoff]
         },
         #{
+            id => ftpfilez_pool,
+            start => {ftpfilez_pool, start_link, []},
+            restart => permanent,
+            shutdown => 5000,
+            type => worker,
+            modules => [ftpfilez_pool]
+        },
+        #{
             id => ftpfilez_jobs_sup,
             start => {ftpfilez_jobs_sup, start_link, []},
             restart => permanent,

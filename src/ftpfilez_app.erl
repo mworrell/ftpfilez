@@ -23,8 +23,6 @@
 
 -export([start/2, stop/1]).
 
--define(DEFAULT_MAX_CONNECTIONS, 4).
-
 start(_StartType, _StartArgs) ->
     case ftpfilez_sup:start_link() of
         {ok, Pid} ->
@@ -44,12 +42,9 @@ ensure_queue() ->
                              ]}]}
         ]).
 
-%% @doc Max number of parallel connections. Quite some FTP servers
+%% @doc Max number of parallel connections per server. Quite some FTP servers
 %% have a limit of 10 connections. We set the default to 4, so both
 %% the live site and the backup site can connect simultaneously.
 -spec max_connections() -> pos_integer().
 max_connections() ->
-    case application:get_env(ftpfilez, max_connections) of
-        {ok, N} when is_integer(N) -> N;
-        undefined -> ?DEFAULT_MAX_CONNECTIONS
-    end.
+    ftpfilez_pool:max_connections().
