@@ -174,12 +174,10 @@ status() ->
     ftpfilez_pool:status().
 
 %% @doc Fetch the data at the url.
-%% @todo Ensure a queue per hostname.
 -spec get( config(), url() ) ->
       {ok, ContentType::binary(), Data::binary()}
     | {error, enoent | forbidden | term()}.
 get(Config, Url) ->
-    % jobs:run(ftpfilez_jobs, fun() -> request(Config, get, Url, [], []) end),
     {Cfg, Path} = config_path(Config, Url),
     case ftpfilez_ftps:download(Cfg, Path) of
         {ok, Data} ->

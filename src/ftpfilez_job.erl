@@ -1,4 +1,4 @@
-%% @doc Async queued job, scheduled by jobs and supervised by ftpfilez_sup.
+%% @doc Async job supervised by ftpfilez_sup; transfers wait in ftpfilez_pool.
 %% @author Marc Worrell
 %% @copyright 2022 Marc Worrell
 %% @end
