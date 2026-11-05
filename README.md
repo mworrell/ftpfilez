@@ -95,3 +95,21 @@ Pool Status
 `ftpfilez:status/0` returns a sanitized snapshot of all connection workers, including their `idle`, `busy`, or
 `disconnected` state, host, port, username and TLS mode. It also reports the number of waiting and in-flight requests.
 Passwords and TLS options are not included.
+
+## Checking with deprecated OTP FTP APIs
+
+Deprecation checks remain enabled by default. To allow the FTP client APIs that
+this library intentionally uses, run:
+
+```sh
+make xref dialyzer FTPFILEZ_ALLOW_DEPRECATED_FTP=1
+# Or invoke rebar3 directly:
+FTPFILEZ_ALLOW_DEPRECATED_FTP=1 rebar3 xref
+FTPFILEZ_ALLOW_DEPRECATED_FTP=1 rebar3 dialyzer
+```
+
+This suppresses xref warnings for the existing FTP functions used by the library
+and their compiler deprecation warnings (also emitted during Dialyzer's compile
+step). Dialyzer type analysis, other deprecation warnings, and undefined-function
+checks remain enabled. Removed FTP functions are not ignored. Omit the option or
+set it to `0` to restore the default checks.

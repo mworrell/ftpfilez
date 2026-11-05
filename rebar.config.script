@@ -1,0 +1,22 @@
+%% Opt in when intentionally supporting OTP's deprecated FTP client.
+%% Only existing FTP functions are ignored, so removed APIs still fail xref.
+case os:getenv("FTPFILEZ_ALLOW_DEPRECATED_FTP") of
+    "1" ->
+        FtpFunctions = [
+            {cd, 2}, {close, 1}, {delete, 2}, {mkdir, 2}, {nlist, 1},
+            {open, 2}, {pwd, 1}, {recv_bin, 2}, {recv_chunk, 1},
+            {recv_chunk_start, 2}, {send_bin, 3}, {send_chunk, 2},
+            {send_chunk_end, 1}, {send_chunk_start, 2}, {user, 3}
+        ],
+        _ = code:ensure_loaded(ftp),
+        Ignore = [{ftp, F, A} || {F, A} <- FtpFunctions,
+                               erlang:function_exported(ftp, F, A)],
+        ErlOpts = proplists:get_value(erl_opts, CONFIG, []),
+        XrefIgnores = proplists:get_value(xref_ignores, CONFIG, []),
+        lists:keystore(xref_ignores, 1,
+            lists:keystore(erl_opts, 1, CONFIG,
+                {erl_opts, [{nowarn_deprecated_function, Ignore} | ErlOpts]}),
+            {xref_ignores, Ignore ++ XrefIgnores});
+    _ ->
+        CONFIG
+end.
