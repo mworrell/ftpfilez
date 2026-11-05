@@ -16,6 +16,11 @@ jobs:
     name: Test on OTP ${{ matrix.otp_version }}
     runs-on: ${{ matrix.os }}
 
+    # This library intentionally uses OTP's FTP client, deprecated in OTP 29.
+    # Keep other deprecation, undefined-function, and type checks enabled.
+    env:
+      FTPFILEZ_ALLOW_DEPRECATED_FTP: "1"
+
     strategy:
       matrix:
         otp_version: [27,28,29]
