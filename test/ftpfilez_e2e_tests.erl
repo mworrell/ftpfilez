@@ -12,6 +12,7 @@ e2e_test_() ->
             test_case(fun reconnects_after_unexpected_close/1),
             test_case(fun closes_connection_after_idle_timeout/1),
             test_case(fun queues_at_four_connections_per_server/1),
+            test_case(fun queued_and_sync_share_connection_limit/1),
             test_case(fun removes_queued_request_when_caller_stops/1),
             test_case(fun returns_connect_error/1)
         ]}.
@@ -30,6 +31,7 @@ setup() ->
     {ok, Server} = ftpfilez_test_ftp_server:start_link(),
     unlink(Server),
     {ok, _} = application:ensure_all_started(ftp),
+    {ok, _} = application:ensure_all_started(gproc),
     StartedSupervisor = start_supervisor(),
     #{
         server => Server,
@@ -142,6 +144,43 @@ queues_at_four_connections_per_server(Ctx) ->
     Final = stats(Ctx),
     ?assertEqual(4, maps:get(max_connections, Final)),
     ?assertEqual(4, maps:get(max_active_transfers, Final)).
+
+%% The bulk-download API must not bypass the limit used by direct calls.
+queued_and_sync_share_connection_limit(Ctx) ->
+    application:set_env(ftpfilez, max_connections, 2),
+    Config = config(<<"alice">>),
+    Url = url(Ctx, <<"mixed.txt">>),
+    Data = <<"mixed queued and synchronous downloads">>,
+    ?assertEqual(ok, ftpfilez:put(Config, Url, {data, Data})),
+    ok = ftpfilez_test_ftp_server:set_transfer_delay(maps:get(server, Ctx), 600),
+    Workers = start_gets(2, Config, Url),
+    ok = wait_until(fun() -> maps:get(active_transfers, stats(Ctx)) =:= 2 end, 2000),
+    Parent = self(),
+    GetRefs = [begin
+        Ref = make_ref(),
+        {ok, Ref, _} = ftpfilez:queue_get_id(Ref, Config, Url,
+            fun(Id, Result) -> Parent ! {Id, Result} end),
+        Ref
+    end || _ <- lists:seq(1, 2)],
+    StreamRefs = [begin
+        Ref = make_ref(),
+        {ok, Ref, _} = ftpfilez:queue_stream_id(Ref, Config, Url,
+            fun(eof) -> Parent ! {Ref, ok};
+               ({error, _} = Error) -> Parent ! {Ref, Error};
+               (_) -> ok
+            end),
+        Ref
+    end || _ <- lists:seq(1, 2)],
+    ok = wait_until(fun() ->
+        maps:get(waiting_requests, ftpfilez:status()) =:= 4
+    end, 1000),
+    ?assertEqual(2, maps:get(in_flight_requests, ftpfilez:status())),
+    Expected = {ok, <<"application/octet-stream">>, Data},
+    ?assertEqual(lists:duplicate(4, Expected), receive_results(Workers ++ GetRefs, [])),
+    ?assertEqual([ok, ok], receive_results(StreamRefs, [])),
+    Final = stats(Ctx),
+    ?assertEqual(2, maps:get(max_connections, Final)),
+    ?assertEqual(2, maps:get(max_active_transfers, Final)).
 
 removes_queued_request_when_caller_stops(Ctx) ->
     Config = config(<<"alice">>),

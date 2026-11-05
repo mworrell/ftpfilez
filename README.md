@@ -15,7 +15,7 @@ Distinction with other FTPS clients is:
  * Only get, put and delete are supported
  * put of files and/or binaries
  * get with optional streaming function, to be able to stream to the filezcache
- * simple jobs queue, using the 'jobs' scheduler
+ * asynchronous jobs sharing a bounded connection pool
  * missing directories in the target path are automatically created
  * persistent, health-checked connections with a maximum of four per server
 
@@ -34,7 +34,7 @@ Erlang/OTP 23 [erts-11.1] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-thr
 
 Eshell V11.1  (abort with ^G)
 1> application:ensure_all_started(ftpfilez).
-{ok,[jobs,ftpfilez]}
+{ok,[ftpfilez]}
 2> Cfg = #{ username => <<"anonymous">>, password => <<"test@example.com">> }.
 {<<"anonymous">>, <<"test@example.com">>}
 3> ftpfilez:put(Cfg, <<"ftps://ftp.example.com/LICENSE">>, {filename, "LICENSE"}).
@@ -71,7 +71,11 @@ another checkout, avoiding a race between idle expiry and connection reuse. The 
 connection owner is killed. This limit can be configured with `connection_close_timeout_ms`.
 
 The `get`, `put` and `delete` requests can be queued. A function or pid can be given as a callback for the job result.
-The `stream` command can’t be queued: it is already running asynchronously.
+Streaming downloads can also be queued with `queue_stream` or `queue_stream_id`.
+Both synchronous and queued operations use the same pool, including connection setup and authentication.
+`max_connections` sets the limit per host and port (default four, capped at four);
+queued job processes waiting for a connection do not consume FTP connections.
+Use `ftpfilez:status()` to inspect waiting requests and active connections.
 
 Example:
 
@@ -91,3 +95,21 @@ Pool Status
 `ftpfilez:status/0` returns a sanitized snapshot of all connection workers, including their `idle`, `busy`, or
 `disconnected` state, host, port, username and TLS mode. It also reports the number of waiting and in-flight requests.
 Passwords and TLS options are not included.
+
+## Checking with deprecated OTP FTP APIs
+
+Deprecation checks remain enabled by default. To allow the FTP client APIs that
+this library intentionally uses, run:
+
+```sh
+make xref dialyzer FTPFILEZ_ALLOW_DEPRECATED_FTP=1
+# Or invoke rebar3 directly:
+FTPFILEZ_ALLOW_DEPRECATED_FTP=1 rebar3 xref
+FTPFILEZ_ALLOW_DEPRECATED_FTP=1 rebar3 dialyzer
+```
+
+This suppresses xref warnings for the existing FTP functions used by the library
+and their compiler deprecation warnings (also emitted during Dialyzer's compile
+step). Dialyzer type analysis, other deprecation warnings, and undefined-function
+checks remain enabled. Removed FTP functions are not ignored. Omit the option or
+set it to `0` to restore the default checks.

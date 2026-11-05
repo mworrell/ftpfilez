@@ -24,27 +24,7 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-    case ftpfilez_sup:start_link() of
-        {ok, Pid} ->
-            ensure_queue(),
-            {ok, Pid};
-        Other ->
-            {error, Other}
-    end.
+    ftpfilez_sup:start_link().
 
 stop(_State) ->
     ok.
-
-ensure_queue() ->
-    jobs:add_queue(ftpfilez_jobs, [
-            {regulators, [{counter, [
-                                {limit, max_connections()}
-                             ]}]}
-        ]).
-
-%% @doc Max number of parallel connections per server. Quite some FTP servers
-%% have a limit of 10 connections. We set the default to 4, so both
-%% the live site and the backup site can connect simultaneously.
--spec max_connections() -> pos_integer().
-max_connections() ->
-    ftpfilez_pool:max_connections().
