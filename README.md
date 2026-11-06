@@ -73,6 +73,13 @@ connection owner is killed. This limit can be configured with `connection_close_
 The `get`, `put` and `delete` requests can be queued. A function or pid can be given as a callback for the job result.
 Streaming downloads can also be queued with `queue_stream` or `queue_stream_id`.
 Both synchronous and queued operations use the same pool, including connection setup and authentication.
+
+Streaming callbacks run in the process calling `stream/3`, including function and MFA callbacks.
+For queued streams, this is the job process. The pool worker waits for each callback to finish
+before reading the next chunk, preserving event order and backpressure. Callback exceptions
+are raised in the caller, and the interrupted FTP connection is closed before reuse. If the
+caller stops while a callback is pending, the worker releases that connection as well.
+This preserves compatibility with process-owned resources such as `filezcache` writers.
 `max_connections` sets the limit per host and port (default four, capped at four);
 queued job processes waiting for a connection do not consume FTP connections.
 Use `ftpfilez:status()` to inspect waiting requests and active connections.
