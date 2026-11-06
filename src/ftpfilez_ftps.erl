@@ -134,18 +134,23 @@ download(Cfg, Filename) ->
     StreamFun :: ftpfilez:stream_fun() | {any(), pid()},
     Result :: ok | {error, term()}.
 stream(Cfg, Filename, StreamFun) ->
-    Fun = fun(Pid) ->
+    Fun = fun(Pid, Relay) ->
         {Directory, Basename} = split_filename(to_bin(Filename)),
         Path = join(Directory ++ [ Basename ]),
         case ftp:recv_chunk_start(Pid, to_list(Path)) of
             ok ->
-                start_fun(StreamFun),
-                stream_loop(Pid, StreamFun);
+                Relay(stream_start),
+                stream_loop(Pid, Relay);
             {error, _} = Error ->
                 Error
         end
     end,
-    case do_ftp(Cfg, Fun) of
+    Callback = fun
+        (stream_start) -> start_fun(StreamFun);
+        (eof) -> eof_fun(StreamFun);
+        (Data) -> call_fun(StreamFun, Data)
+    end,
+    case ftpfilez_pool:run(Cfg, Fun, Callback) of
         ok ->
             ok;
         {error, _} = Error ->

@@ -2,6 +2,9 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
+%% Exported to exercise the public MFA stream callback interface.
+-export([collect_stream/1]).
+
 e2e_test_() ->
     {foreach,
         fun setup/0,
@@ -14,6 +17,9 @@ e2e_test_() ->
             test_case(fun queues_at_four_connections_per_server/1),
             test_case(fun queued_and_sync_share_connection_limit/1),
             test_case(fun removes_queued_request_when_caller_stops/1),
+            test_case(fun streams_in_calling_process/1),
+            test_case(fun stream_callback_failure/1),
+            test_case(fun stream_backpressure_and_caller_death/1),
             test_case(fun returns_connect_error/1)
         ]}.
 
@@ -329,3 +335,58 @@ restore_env(Key, undefined) ->
     application:unset_env(ftpfilez, Key);
 restore_env(Key, {ok, Value}) ->
     application:set_env(ftpfilez, Key, Value).
+
+streams_in_calling_process(Ctx) ->
+    Config = config(<<"alice">>),
+    Url = url(Ctx, <<"stream.txt">>),
+    Data = binary:copy(<<"streamed bytes">>, 10000),
+    ?assertEqual(ok, ftpfilez:put(Config, Url, {data, Data})),
+    Caller = self(),
+    lists:foreach(fun(Callback) ->
+        put(stream_events, []),
+        ?assertEqual(ok, ftpfilez:stream(Config, Url, Callback)),
+        Events = lists:reverse(erase(stream_events)),
+        ?assertEqual(stream_start, hd(Events)),
+        ?assertEqual(eof, lists:last(Events)),
+        ?assertEqual(Data, iolist_to_binary([B || B <- Events, is_binary(B)]))
+    end, [fun(Event) -> ?assertEqual(Caller, self()), collect_stream(Event) end,
+          {?MODULE, collect_stream, []}]),
+    %% Tagged recipients keep their existing message shapes and ordering.
+    Ref = make_ref(),
+    ?assertEqual(ok, ftpfilez:stream(Config, Url, {Ref, self()})),
+    receive {ftp, {Ref, stream_start, []}} -> ok after 1000 -> error(no_start) end,
+    ?assertEqual(Data, receive_stream(Ref, [])).
+
+collect_stream(Event) -> put(stream_events, [Event | get(stream_events)]), ok.
+
+receive_stream(Ref, Acc) ->
+    receive
+        {ftp, {Ref, stream, Bin}} -> receive_stream(Ref, [Bin | Acc]);
+        {ftp, {Ref, stream_end, []}} -> iolist_to_binary(lists:reverse(Acc))
+    after 1000 -> error(no_stream_end)
+    end.
+
+stream_callback_failure(Ctx) ->
+    Config = config(<<"alice">>),
+    Url = url(Ctx, <<"callback-error.txt">>),
+    ?assertEqual(ok, ftpfilez:put(Config, Url, {data, <<"data">>})),
+    ?assertError(callback_failed, ftpfilez:stream(Config, Url,
+        fun(_) -> error(callback_failed) end)),
+    ?assertEqual(0, maps:get(in_flight_requests, ftpfilez:status())),
+    ?assertEqual({ok, <<"application/octet-stream">>, <<"data">>}, ftpfilez:get(Config, Url)).
+
+stream_backpressure_and_caller_death(Ctx) ->
+    %% Acknowledgement gates the next read, even while the callback is blocked.
+    Parent = self(),
+    Caller = spawn(fun() ->
+        ftpfilez_pool:run((config(<<"alice">>))#{host => <<"127.0.0.1">>, port => maps:get(port, Ctx)}, fun(_, Relay) ->
+            Relay(first),
+            Parent ! advanced,
+            ok
+        end, fun(first) -> Parent ! {callback, self()}, receive release -> ok end end)
+    end),
+    receive {callback, Caller} -> ok after 2000 -> error(no_callback) end,
+    receive advanced -> error(read_ahead_of_callback) after 50 -> ok end,
+    exit(Caller, kill),
+    ok = wait_until(fun() -> maps:get(in_flight_requests, ftpfilez:status()) =:= 0 end, 2000),
+    receive advanced -> error(read_after_caller_death) after 0 -> ok end.

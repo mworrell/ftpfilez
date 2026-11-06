@@ -30,6 +30,7 @@
 -export([
     start_link/0,
     run/2,
+    run/3,
     status/0,
     max_connections/0
 ]).
@@ -94,6 +95,54 @@ start_link() ->
 -spec run(ftpfilez_ftps:config(), operation()) -> term().
 run(Cfg, Fun) when is_function(Fun, 1) ->
     gen_server:call(?SERVER, {run, Cfg, Fun}, infinity).
+
+%% @doc Run a streaming operation while executing callbacks in the caller.
+%% Each callback is acknowledged before the worker reads another chunk. Using
+%% a monitored gen_server request also works on the minimum supported OTP 22.
+-spec run(ftpfilez_ftps:config(), fun((pid(), fun((term()) -> term())) -> term()),
+    fun((term()) -> term())) -> term().
+run(Cfg, Fun, Callback) ->
+    case whereis(?SERVER) of
+        undefined -> exit(noproc);
+        Pool ->
+            Caller = self(),
+            Ref = monitor(process, Pool),
+            Operation = fun(FtpPid) ->
+                CallerMonitor = monitor(process, Caller),
+                Relay = fun(Event) ->
+                    Caller ! {Ref, callback, self(), Event},
+                    receive
+                        {Ref, continue} -> ok;
+                        {Ref, callback_failed} -> error(stream_callback_failed);
+                        {'DOWN', CallerMonitor, process, Caller, _} -> exit(stream_caller_down)
+                    end
+                end,
+                try Fun(FtpPid, Relay)
+                after demonitor(CallerMonitor, [flush]) end
+            end,
+            Pool ! {'$gen_call', {Caller, Ref}, {run, Cfg, Operation}},
+            try stream_reply(Pool, Ref, Callback, undefined)
+            after demonitor(Ref, [flush]) end
+    end.
+
+stream_reply(Pool, Ref, Callback, Exception) ->
+    receive
+        {Ref, callback, Worker, Event} ->
+            Failure = try Callback(Event) of
+                _ -> Worker ! {Ref, continue}, undefined
+            catch Class:Reason:Stack ->
+                Worker ! {Ref, callback_failed},
+                {Class, Reason, Stack}
+            end,
+            stream_reply(Pool, Ref, Callback, Failure);
+        {Ref, Result} ->
+            stream_result(Result, Exception);
+        {'DOWN', Ref, process, Pool, Reason} ->
+            stream_result({error, {pool_down, Reason}}, Exception)
+    end.
+
+stream_result(Result, undefined) -> Result;
+stream_result(_Result, {Class, Reason, Stack}) -> erlang:raise(Class, Reason, Stack).
 
 %% @doc Return a sanitized snapshot of all connection workers and queued work.
 -spec status() -> map().

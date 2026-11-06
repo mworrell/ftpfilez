@@ -116,7 +116,12 @@ run(Cfg, Fun, State) ->
     case ensure_connection(Cfg, State) of
         {ok, #state{ftp_pid = FtpPid} = State1} ->
             Result = call_operation(Fun, FtpPid),
-            {Result, check_connection(State1)};
+            NextState = case Result of
+                {error, {ftp_operation_failed, {error, stream_callback_failed}}} -> close(State1);
+                {error, {ftp_operation_failed, {exit, stream_caller_down}}} -> close(State1);
+                _ -> check_connection(State1)
+            end,
+            {Result, NextState};
         {{error, _} = Error, State1} ->
             {Error, State1}
     end.

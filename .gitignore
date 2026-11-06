@@ -17,5 +17,5 @@ rebar3
 _build/
 _checkouts/
 
-doc/.build.epub
-doc/*.epub
+# Generated ExDoc documentation
+/doc/
